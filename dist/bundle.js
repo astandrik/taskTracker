@@ -11551,8 +11551,62 @@ module.exports = __webpack_require__(151);
 
 
 /***/ }),
-/* 102 */,
-/* 103 */,
+/* 102 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+var compose = __webpack_require__(26).compose;
+
+exports.__esModule = true;
+exports.composeWithDevTools = (
+  typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ ?
+    window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ :
+    function() {
+      if (arguments.length === 0) return undefined;
+      if (typeof arguments[0] === 'object') return compose;
+      return compose.apply(null, arguments);
+    }
+);
+
+exports.devToolsEnhancer = (
+  typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION__ ?
+    window.__REDUX_DEVTOOLS_EXTENSION__ :
+    function() { return function(noop) { return noop; } }
+);
+
+
+/***/ }),
+/* 103 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+exports.__esModule = true;
+function createThunkMiddleware(extraArgument) {
+  return function (_ref) {
+    var dispatch = _ref.dispatch,
+        getState = _ref.getState;
+    return function (next) {
+      return function (action) {
+        if (typeof action === 'function') {
+          return action(dispatch, getState, extraArgument);
+        }
+
+        return next(action);
+      };
+    };
+  };
+}
+
+var thunk = createThunkMiddleware();
+thunk.withExtraArgument = createThunkMiddleware;
+
+exports['default'] = thunk;
+
+/***/ }),
 /* 104 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11592,6 +11646,10 @@ if(false) {
 
 var _redux = __webpack_require__(26);
 
+var _reduxThunk = __webpack_require__(103);
+
+var _reduxThunk2 = _interopRequireDefault(_reduxThunk);
+
 var _react = __webpack_require__(25);
 
 var _react2 = _interopRequireDefault(_react);
@@ -11614,10 +11672,15 @@ var _reducer2 = _interopRequireDefault(_reducer);
 
 var _actions = __webpack_require__(55);
 
+var _reduxDevtoolsExtension = __webpack_require__(102);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var store = (0, _redux.createStore)(_reducer2.default);
-store.dispatch((0, _actions.initApp)({ header: "Who will win?" }));
+var composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || _redux.compose;
+
+var store = (0, _redux.createStore)(_reducer2.default, composeEnhancers((0, _redux.applyMiddleware)(_reduxThunk2.default)));
+store.dispatch((0, _actions.initApp)({ header: "Who will whar?" }));
+store.dispatch((0, _actions.getMatches)());
 
 _reactDom2.default.render(_react2.default.createElement(
   _reactRedux.Provider,
