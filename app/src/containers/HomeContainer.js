@@ -4,7 +4,7 @@ import Home from "../components/Home.js";
 const mapStateToProps = (state, ownProps) => {
   return {
     header: state.Home.header,
-    matches: state.home.matches
+    matches: state.Home.matches
   }
 }
 

@@ -9,7 +9,10 @@ export function Action(type){
 
 export function FetchAsync(url, callback) {
   return function(dispatch) {
-    return fetch(url)
+    return fetch(url,{
+          method: "GET",
+          credentials: 'include'
+        })
     .then(r => r.json())
     .then(json => callback(dispatch, json));
   }
