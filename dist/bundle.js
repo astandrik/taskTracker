@@ -6860,7 +6860,6 @@ var setMatches = exports.setMatches = ac.Action(SET_POSTS);
 
 var getMatches = exports.getMatches = function getMatches() {
   var callback = function callback(dispatch, json) {
-    debugger;
     dispatch(setMatches({ data: json }));
   };
   return ac.FetchAsync("/allMatches", callback);
@@ -11810,6 +11809,27 @@ var Home = function (_React$Component) {
     key: "render",
     value: function render() {
       var props = this.props;
+      var list = [];
+      if (props.matches) list = props.matches.map(function (x) {
+        return _react2.default.createElement(
+          "div",
+          { key: x.id },
+          _react2.default.createElement(
+            "span",
+            null,
+            "1: ",
+            x.name1
+          ),
+          " ",
+          _react2.default.createElement(
+            "span",
+            null,
+            "2: ",
+            x.name2
+          ),
+          " "
+        );
+      });
       return _react2.default.createElement(
         "div",
         { className: "flexV full-height" },
@@ -11825,7 +11845,8 @@ var Home = function (_React$Component) {
         _react2.default.createElement(
           "div",
           { className: "workSpace" },
-          _react2.default.createElement("button", { className: "add_button", onClick: props.addMatch })
+          _react2.default.createElement("button", { className: "add_button", onClick: props.addMatch }),
+          list
         )
       );
     }

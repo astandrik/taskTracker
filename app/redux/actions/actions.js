@@ -7,8 +7,7 @@ export const initApp = ac.Action(INIT_APP);
 export const setMatches = ac.Action(SET_POSTS);
 
 export const getMatches = function() {
-  let callback = (dispatch, json) => {
-    debugger;
+  let callback = (dispatch, json) => {    
     dispatch(setMatches({data: json}));
   };
   return ac.FetchAsync("/allMatches", callback);
