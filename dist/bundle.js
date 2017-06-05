@@ -11759,7 +11759,11 @@ var Home = function (_React$Component) {
             props.header
           )
         ),
-        _react2.default.createElement("div", { className: "workSpace" })
+        _react2.default.createElement(
+          "div",
+          { className: "workSpace" },
+          _react2.default.createElement("button", { className: "add_button", onClick: props.addMatch })
+        )
       );
     }
   }]);
