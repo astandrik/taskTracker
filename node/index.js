@@ -38,7 +38,7 @@ app.get("/insertRandom", function(req,res) {
 });
 
 app.get("/allMatches", function(req,res) {
-  res.send(sequelize.getAllMatches());
+  sequelize.getAllMatches().then(result => res.send(result));
 });
 
 app.get('/', function (req, res) {
