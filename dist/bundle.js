@@ -6843,7 +6843,7 @@ module.exports = ReactNoopUpdateQueue;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getMatches = exports.setMatches = exports.initApp = exports.SET_POSTS = exports.GET_MATCHES = exports.INIT_APP = undefined;
+exports.getMatches = exports.setMatches = exports.initApp = exports.SET_MATCHES = exports.GET_MATCHES = exports.INIT_APP = undefined;
 
 var _actionCreator = __webpack_require__(106);
 
@@ -6853,10 +6853,10 @@ function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj;
 
 var INIT_APP = exports.INIT_APP = "INIT_APP";
 var GET_MATCHES = exports.GET_MATCHES = 'REQUEST_MATCHES';
-var SET_POSTS = exports.SET_POSTS = "SET_POSTS";
+var SET_MATCHES = exports.SET_MATCHES = "SET_MATCHES";
 
 var initApp = exports.initApp = ac.Action(INIT_APP);
-var setMatches = exports.setMatches = ac.Action(SET_POSTS);
+var setMatches = exports.setMatches = ac.Action(SET_MATCHES);
 
 var getMatches = exports.getMatches = function getMatches() {
   var callback = function callback(dispatch, json) {
