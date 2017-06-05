@@ -18,7 +18,6 @@ const mapDispatchToProps = (dispatch) => {
 
 const HomeContainer = connect(
   mapStateToProps,
-
 )(Home)
 
 export default HomeContainer;
