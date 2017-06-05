@@ -1,5 +1,19 @@
-export default function(type){
+import fetch from 'isomorphic-fetch';
+
+
+export function Action(type){
   return function(data) {
     return {type, ...data};
   }
 }
+
+export function FetchAsync(url, callback) {
+  return function(dispatch) {
+    return fetch(url)
+    .then(r => r.json())
+    .then(json => callback(dispatch, json));
+  }
+}
+
+
+
