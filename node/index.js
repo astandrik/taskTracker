@@ -26,7 +26,7 @@ function randomString(len) {
 
 app.use(express.static(path.join(__dirname + '/../dist')));
 
-app.post("/insertMatch", function(req,res) {
+app.post("/matches", function(req,res) {
   if(!req.body.name1 || !req.body.name2) res.send("Incorrect data");
   sequelize.insertMatch(req.body.name1,req.body.name2);
   res.send("Inserted");
@@ -37,7 +37,7 @@ app.get("/insertRandom", function(req,res) {
   res.send("Inserted");
 });
 
-app.get("/allMatches", function(req,res) {
+app.get("/matches", function(req,res) {
   sequelize.getAllMatches().then(result => res.send(result));
 });
 
