@@ -6862,7 +6862,7 @@ var getMatches = exports.getMatches = function getMatches() {
   var callback = function callback(dispatch, json) {
     dispatch(setMatches({ data: json }));
   };
-  return ac.FetchAsync("/allMatches", callback);
+  return ac.FetchAsync("/matches", callback);
 };
 
 /***/ }),
@@ -11261,10 +11261,10 @@ function insertStyleElement (options, style) {
 }
 
 function removeStyleElement (style) {
+	if (style.parentNode === null) return false;
 	style.parentNode.removeChild(style);
 
 	var idx = stylesInsertedAtTop.indexOf(style);
-
 	if(idx >= 0) {
 		stylesInsertedAtTop.splice(idx, 1);
 	}
@@ -11866,7 +11866,7 @@ exports = module.exports = __webpack_require__(57)(undefined);
 
 
 // module
-exports.push([module.i, "#root {\n  width: 100vw;\n  height: 100vh;\n}\n\n.flexV {\n  display: flex;\n  flex-direction: column;\n}\n\nbody {\n  margin: 0;\n}", ""]);
+exports.push([module.i, "#root {\r\n  width: 100vw;\r\n  height: 100vh;\r\n}\r\n\r\n.flexV {\r\n  display: flex;\r\n  flex-direction: column;\r\n}\r\n\r\nbody {\r\n  margin: 0;\r\n}", ""]);
 
 // exports
 
@@ -11880,7 +11880,7 @@ exports = module.exports = __webpack_require__(57)(undefined);
 
 
 // module
-exports.push([module.i, ".header {\n  width: 100%;\n  height: 10%;\n  border-bottom: 1px black solid;\n}\n\n.workSpace {\n  width: 100%;\n  height:90%;\n}\n\n.full-height{\n  height: 100%;\n}\n", ""]);
+exports.push([module.i, ".header {\r\n  width: 100%;\r\n  height: 10%;\r\n  border-bottom: 1px black solid;\r\n}\r\n\r\n.workSpace {\r\n  width: 100%;\r\n  height:90%;\r\n}\r\n\r\n.full-height{\r\n  height: 100%;\r\n}\r\n", ""]);
 
 // exports
 

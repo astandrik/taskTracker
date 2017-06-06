@@ -1,7 +1,8 @@
 var Sequelize = require('sequelize');
-var seq = new Sequelize('whowin', 'root', '123', {
+var seq = new Sequelize('whowin', 'root', '1234', {
     host: 'localhost',
     dialect: 'mysql',
+    port: 3306,
 
     pool: {
       max: 5,
@@ -49,4 +50,3 @@ module.exports =  {
   insertMatch: insertMatch,
   getAllMatches: getAllMatches
 }
-
