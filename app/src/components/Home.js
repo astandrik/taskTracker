@@ -4,7 +4,7 @@ import "./Home.css";
 export default class Home extends  React.Component{
   render() {
     const props = this.props;
-    let list = [];    
+    let list = [];
     if(props.matches) list = props.matches.map(x => <div key={x.id}><span>1: {x.name1}</span> <span>2: {x.name2}</span> </div>)
     return (
       <div className="flexV full-height">
