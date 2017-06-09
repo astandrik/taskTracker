@@ -10,5 +10,5 @@ export const getMatches = function() {
   let callback = (dispatch, json) => {
     dispatch(setMatches({data: json}));
   };
-  return ac.FetchAsync("/matches", callback);
+  return ac.FetchAsync("/api/matches", callback);
 }

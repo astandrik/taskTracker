@@ -17,7 +17,15 @@ module.exports = {
             { test: /\.jsx$/, loader: 'babel-loader', exclude: /node_modules/ }
         ]
     },
-    plugins: [      
+    plugins: [
       new CleanWebpackPlugin([path.resolve('dist')])
-    ]
+    ],
+    devServer: {
+     proxy: {
+       '/api': {
+         target: 'http://localhost:3000/',
+         secure: false
+       }
+     }
+   }
 };

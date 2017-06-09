@@ -26,18 +26,18 @@ function randomString(len) {
 
 app.use(express.static(path.join(__dirname + '/../dist')));
 
-app.post("/matches", function(req,res) {
+app.post("/api/matches", function(req,res) {
   if(!req.body.name1 || !req.body.name2) res.send("Incorrect data");
   sequelize.insertMatch(req.body.name1,req.body.name2);
   res.send("Inserted");
 });
 
-app.get("/insertRandom", function(req,res) {
+app.get("/api/insertRandom", function(req,res) {
   sequelize.insertMatch(randomString(20),randomString(20));
   res.send("Inserted");
 });
 
-app.get("/matches", function(req,res) {
+app.get("/api/matches", function(req,res) {
   sequelize.getAllMatches().then(result => res.send(result));
 });
 
@@ -45,7 +45,7 @@ app.get('/', function (req, res) {
  res.sendFile(path.join(__dirname + '/../index.html'));
 });
 
-app.get('/dbcreate', function(req,res) {
+app.get('/api/dbcreate', function(req,res) {
   sequelize.createTables();
   res.send("ok");
 });
