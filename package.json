@@ -20,6 +20,7 @@
     "clean-webpack-plugin": "^0.1.16",
     "css-loader": "^0.28.4",
     "isomorphic-fetch": "^2.2.1",
+    "jsdom": "^11.0.0",
     "mocha": "^3.4.2",
     "mysql": "^2.13.0",
     "redux-thunk": "^2.2.0",
