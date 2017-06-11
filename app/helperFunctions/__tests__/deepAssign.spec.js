@@ -27,12 +27,19 @@ describe("deepAssign tests", () => {
     expect(deepAssign(a,b)).toEqual(Object.assign({},a,b));
     expect(deepAssign(a,b)).toNotBe(a);
   });
+  it("single array test", () => {
+    let a = {
+      c: []
+    };
+    let b = {};
+    expect(deepAssign(a,b)).toEqual(a);
+  })
   it("nested test", () => {
     let a = {
       field1: "hello",
       field2: {
         field3: "hey",
-        field5: "rock"
+        field5: []
       }
     };
     let b = {
@@ -46,7 +53,7 @@ describe("deepAssign tests", () => {
       field2: {
         field3: "hmm",
         field4: "bye",
-        field5: "rock"
+        field5: []
       }
     }
     expect(deepAssign(a,b)).toEqual(expectedObject);

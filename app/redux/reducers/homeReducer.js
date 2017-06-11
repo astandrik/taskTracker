@@ -1,4 +1,4 @@
-import {INIT_APP, SET_MATCHES, SET_PROPOSED} from "../actions/actions";
+import {SET_HEADER, SET_MATCHES, SET_PROPOSED} from "../actions/actions";
 
 let reducer = {};
 
@@ -20,9 +20,9 @@ reducer.matches = function(state= [], action) {
   }
 }
 
-reducer.header = function(state = {}, action) {
+reducer.header = function(state = "", action) {
   switch (action.type) {
-    case INIT_APP:
+    case SET_HEADER:
       return action.header;
     default:
       return state;
