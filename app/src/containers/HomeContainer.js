@@ -3,8 +3,7 @@ import Home from "../components/Home.js";
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    header: state.Home.header,
-    matches: state.Home.matches
+    header: state.Home.header
   }
 }
 
