@@ -1,5 +1,4 @@
-import fetch from 'isomorphic-fetch';
-
+import 'isomorphic-fetch';
 
 export function Action(type){
   return function(data) {
@@ -17,6 +16,3 @@ export function FetchAsync(url, callback) {
     .then(json => callback(dispatch, json));
   }
 }
-
-
-

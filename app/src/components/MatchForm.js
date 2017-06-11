@@ -1,6 +1,6 @@
 import React from "react";
 
-let sosi = "sosi";
+
 
 export default class MatchForm extends React.Component {
   render() {

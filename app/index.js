@@ -8,12 +8,12 @@ import Home from "./src/containers/HomeContainer";
 import reducer from "./redux/reducer";
 import {initApp} from "./redux/actions/actions";
 import { composeWithDevTools } from 'redux-devtools-extension';
-import { getMatches } from "./redux/actions/actions";
+import { getMatches, getProposed } from "./redux/actions/actions";
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)));
 store.dispatch(initApp({header: "Who will win?"}));
-store.dispatch(getMatches());
+store.dispatch(getProposed());
 
 
 ReactDom.render(
