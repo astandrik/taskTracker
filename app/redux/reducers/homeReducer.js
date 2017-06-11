@@ -1,6 +1,15 @@
-import {INIT_APP, SET_MATCHES} from "../actions/actions";
+import {INIT_APP, SET_MATCHES, SET_PROPOSED} from "../actions/actions";
 
 let reducer = {};
+
+reducer.proposed = function(state = [], action) {
+  switch (action.type) {
+    case SET_PROPOSED:
+      return action.data;
+    default:
+      return state;
+  }
+}
 
 reducer.matches = function(state= [], action) {
   switch (action.type) {

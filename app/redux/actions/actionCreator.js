@@ -17,6 +17,3 @@ export function FetchAsync(url, callback) {
     .then(json => callback(dispatch, json));
   }
 }
-
-
-
