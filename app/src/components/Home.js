@@ -1,5 +1,4 @@
 import React from "react";
-import MatchForm from "./MatchForm";
 import PostsList from "./PostsList";
 import "./Home.css";
 

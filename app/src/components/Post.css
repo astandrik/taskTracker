@@ -1,0 +1,6 @@
+.single-post {
+  max-width: 50%;
+  margin:10px;
+  border: 1px black solid;
+  word-break: break-all;
+}

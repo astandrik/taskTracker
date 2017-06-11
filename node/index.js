@@ -47,7 +47,7 @@ app.post("/api/matches", function(req,res) {
 });
 
 
-app.get('/api/2chposts', function(req, ress) {
+app.get('/api/proposed', function(req, ress) {
   var req = https.get('https://2ch.hk/b/', function(res) {
     console.log('STATUS: ' + res.statusCode);
     console.log('HEADERS: ' + JSON.stringify(res.headers));

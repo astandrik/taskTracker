@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from 'react-redux';
+import "./Post.css";
 
 let Post = (props) => {
   return (
@@ -15,8 +16,8 @@ class Posts extends React.Component {
   render() {
     let props = this.props,
         jsonData = props.posts,
-        list = jsonData.map(x => <Post key={x.time} time={x.time} text={x.text}/>);
-    return <div className="column">
+        list = jsonData.map((x,i) => <Post key={i} time={x.time} text={x.text}/>);
+    return <div className="column align-center">
             {list}
            </div>
 
