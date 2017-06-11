@@ -6,7 +6,6 @@ import helpers from "../../../helperFunctions/helpers";
 
 const base = {
   Home: {
-    matches: [],
     header: ""
   },
   Posts: {
@@ -27,5 +26,21 @@ describe("Global reducer test", () => {
       header: cheader
     }
     expect(gReducer(base,headerAction)).toEqual(expectedStore);
+  });
+  it("should set posts", ()=> {
+    let posts = [];
+    posts.push({text: "hmm", time: 123});
+    posts.push({text: "hmmm", time: 1234});
+    const dispatchedAction = {
+      type: actions.SET_PROPOSED,
+      data: posts
+    };
+    let expectedStore = helpers.deepAssign(base, {
+      Posts: {
+        proposed: posts
+      }
+    });
+    expect(gReducer(base, dispatchedAction)).toEqual(expectedStore);
   })
-})
+});
+
