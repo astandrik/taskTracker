@@ -6,7 +6,7 @@
   "scripts": {
     "coverage": "jest --coverage",
     "test": "jest --verbose",
-    "test-watch": "jest --watch",
+    "test-watch": "jest --watch --notify",
     "dev": "webpack-dev-server --watch"
   },
   "author": "",

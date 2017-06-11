@@ -9,10 +9,9 @@
   height:90%;
 }
 
-.who-win-list {
+.column {
   display: flex;
   flex-direction: column;
-  
 }
 
 .full-height{
