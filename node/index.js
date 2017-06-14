@@ -1,30 +1,23 @@
+var config = require("../config");
 var express = require('express')
   , app = express()
-  , port = process.env.PORT || 3000
+  , port = config.ports.app
   ,https = require('https'),
   http = require('http'),
   fs= require('fs');
   var path = require('path');
-const sequelize = require("./db.js");
 const bodyParse = require('./bodyParse');
 
-function testConnection(sequelize) {
-  sequelize
-  .authenticate()
-  .then(() => {
-    console.log('Connection has been established successfully.');
-  })
-  .catch(err => {
-    console.error('Unable to connect to the database:', err);
-  });
-}
+app.listen(port, () => {
+  console.log("listening on " + port);
+})
 
-https.createServer({
-   key: fs.readFileSync('key.pem'),
-   cert: fs.readFileSync('cert.pem')
- }, app).listen(port,function () {
-   console.log('Listening on port ', port)
- });
+var fs = require("fs");
+
+app.get("/getfile", (req,res) => {
+  let content = fs.readFileSync(path.join(__dirname + "/db.js")).toString();
+  res.send(content);
+})
 
 
 var bodyParser = require('body-parser')
@@ -40,18 +33,15 @@ function randomString(len) {
 
 app.use(express.static(path.join(__dirname + '/../dist')));
 
-app.post("/api/matches", function(req,res) {
-  if(!req.body.name1 || !req.body.name2) res.send("Incorrect data");
-  sequelize.insertMatch(req.body.name1,req.body.name2);
-  res.send("Inserted");
-});
+
+app.post("/api/post", function(req, res) {
+  console.log(req.body);
+  res.send("sosi");
+})
 
 
 app.get('/api/proposed', function(req, ress) {
   var req = https.get('https://2ch.hk/b/', function(res) {
-    console.log('STATUS: ' + res.statusCode);
-    console.log('HEADERS: ' + JSON.stringify(res.headers));
-
     // Buffer the body entirely for processing as a whole.
     var bodyChunks = [];
     res.on('data', function(chunk) {
@@ -69,24 +59,26 @@ app.get('/api/proposed', function(req, ress) {
   });
 });
 
-app.get("/api/insertRandom", function(req,res) {
-  sequelize.insertMatch(randomString(20),randomString(20));
-  res.send("Inserted");
-});
 
-app.get("/api/matches", function(req,res) {
-  sequelize.getAllMatches().then(result => res.send(result));
-});
 
 app.get('/', function (req, res) {
  res.sendFile(path.join(__dirname + '/../index.html'));
 });
 
-app.get('/api/dbcreate', function(req,res) {
-  sequelize.createTables();
-  res.send("ok");
+app.get('/api/dbcreate', function(req,ress) {
+  http.get("http://127.0.0.1:" + config.ports.dbservice + "/dbcreate", function(res) {
+    var body = '';
+    res.on('data', function(chunk) {
+      body += chunk;
+    });
+    res.on('end', function() {
+      console.log(body);
+      ress.send("db created\n");
+    });
+    res.on("error", function(e) {
+      ress.send(e);
+    })
+  });
 });
 
 
-
-testConnection(sequelize.dbConn);

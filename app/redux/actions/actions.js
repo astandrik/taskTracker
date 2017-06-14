@@ -12,3 +12,7 @@ export const getProposed = function() {
   };
   return ac.FetchAsync("/api/proposed", callback);
 }
+
+export const sendPost = function(data) {
+  return ac.FetchPostAsync("/api/post", data);
+}
