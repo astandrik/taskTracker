@@ -20,6 +20,8 @@ class Global extends React.Component {
     return (
       <div className="header">
         <h3>{props.header}</h3>
+        <Link to="/">Домой</Link>
+        <Link to="/postslist">Список Постов</Link>
       </div>
     )
   }
@@ -29,15 +31,15 @@ let IRouter = class IndexRouter extends React.Component {
   render() {
     let props = this.props;
     return (
-    <div>
-    <Global header={this.props.header}/>
     <Router>
-      <Switch>
-        <Route exact path='/' component={Home}/>
-        <Route path='/postslist' component={Posts} />
-      </Switch>
+      <div>
+      <Global header={this.props.header}/>
+        <Switch>
+          <Route exact path='/' component={Home}/>
+          <Route path='/postslist' component={Posts} />
+        </Switch>
+      </div>
     </Router>
-    </div>
     )
   }
 }
