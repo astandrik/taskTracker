@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
-import Home from "../components/Home.js";
+import Posts from "../routes/Posts.js";
 import {sendPost} from "../../redux/actions/actions";
 
 const mapStateToProps = (state, ownProps) => {
   return {
-    header: state.Home.header
+    
   }
 }
 
@@ -16,9 +16,9 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-const HomeContainer = connect(
+const PostsContainer = connect(
   mapStateToProps,
   mapDispatchToProps
-)(Home)
+)(Posts)
 
-export default HomeContainer;
+export default PostsContainer;
