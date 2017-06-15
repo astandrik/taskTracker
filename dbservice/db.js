@@ -2,6 +2,7 @@ var config = require("../config");
 var express = require("express"),
     app = express(),
     port = config.ports.dbservice;
+var jwt    = require('jsonwebtoken');
 
 app.listen(port, () => {
   console.log("db service listening on " + port);
@@ -88,7 +89,7 @@ var insertToken = function(token) {
   });
 }
 
-var getToken = function(token) {
+var checkT = function(token) {
   return Token.findAll({
     where: {
       token: token
@@ -126,6 +127,17 @@ app.get("/dbcreate", function(req, res) {
   res.send("ok");
 });
 
+app.post("/checkToken", function(req,res) {
+  var token = req.body;
+  checkT(token).then((data) => {
+    if(data.length > 0) {
+      res.send("valid");
+    } else {
+      res.send("invalid");
+    }
+  })
+})
+
 app.post("/verifyLogin", function(req,res) {
   let user = req.body;
   console.log("asking db to auth ", user);
@@ -137,7 +149,12 @@ app.post("/verifyLogin", function(req,res) {
   }).then(data => {
     if(data.length == 1) {
       if(data[0].password == user.password) {
-        res.send("OK");
+        const payload = {
+          name: user.name
+        }
+        const token = jwt.sign(payload, "kokojaja"); //здесь создается JWT
+        insertToken(token);
+        res.send(token);
       } else {
         res.send("Invalid password");
       }

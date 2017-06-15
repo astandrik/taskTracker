@@ -1,4 +1,4 @@
-import {SET_HEADER, SET_PROPOSED} from "../actions/actions";
+import {SET_HEADER, SET_PROPOSED, SET_TOKEN} from "../actions/actions";
 
 let reducer = {};
 
@@ -11,6 +11,14 @@ reducer.proposed = function(state = [], action) {
   }
 }
 
+reducer.token = function(state = '', action) {
+  switch (action.type) {
+    case SET_TOKEN:
+      return action.data
+    default:
+      return state
+  }
+}
 
 reducer.header = function(state = "", action) {
   switch (action.type) {

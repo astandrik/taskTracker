@@ -31,8 +31,41 @@ function randomString(len) {
  return Array.apply(null, new Array(len)).map(x => String.fromCharCode((Math.random() * ('z'.charCodeAt(0) - 'a'.charCodeAt(0)+1) + 'a'.charCodeAt(0)))).join('');
 }
 
-app.use(express.static(path.join(__dirname + '/../dist')));
+app.use(express.static(path.join(__dirname + '/../')));
 
+app.use(function (req, res, next) {
+  let token = req.header["x-acces-token"];
+  if(~req.originalUrl.indexOf("login")) {
+    next();
+  } else if(~req.originalUrl.indexOf("api")) {
+    if(!token) {res.send("Unauthorized request"); return}
+    var options = {
+      method: "POST",
+      port: config.ports.auth,
+      headers: {
+        "Content-Type": "application/json"
+      },
+      path: "/checkToken"
+    };
+    var request = http.request(options, function(res) {
+      let chunks = '';
+      if(res.statusCode !== 200) {
+        ress.send("Error");
+      }
+      res.on("data", function(chunk) {
+        chunks += chunk
+      });
+      res.on("end", function() {
+        console.log(chunks);
+        next();
+      })
+    });
+    request.write(JSON.stringify(token));
+    request.end();
+  } else {
+    next();
+  }
+});
 
 app.post("/api/login", (req,ress) => {
   var body = req.body;
@@ -89,10 +122,6 @@ app.get('/api/proposed', function(req, ress) {
 
 
 
-app.get('/', function (req, res) {
- res.sendFile(path.join(__dirname + '/../index.html'));
-});
-
 app.get('/api/dbcreate', function(req,ress) {
   http.get("http://127.0.0.1:" + config.ports.dbservice + "/dbcreate", function(res) {
     var body = '';
@@ -107,6 +136,10 @@ app.get('/api/dbcreate', function(req,ress) {
       ress.send(e);
     })
   });
+});
+
+app.get('*', function (req, res) {
+ res.sendFile(path.join(__dirname + '/../index.html'));
 });
 
 

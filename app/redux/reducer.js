@@ -6,7 +6,8 @@ const Posts = combineReducers({
 });
 
 const Home = combineReducers({
-  header: homeReducer.header
+  header: homeReducer.header,
+  token: homeReducer.token
 });
 
 export default combineReducers({

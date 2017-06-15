@@ -21,8 +21,13 @@ module.exports = {
       new CleanWebpackPlugin([path.resolve('dist')])
     ],
     devServer: {
+    historyApiFallback: true,
      proxy: {
        '/api': {
+         target: 'http://localhost:3000/',
+         secure: false
+       },
+       '/dist': {
          target: 'http://localhost:3000/',
          secure: false
        }

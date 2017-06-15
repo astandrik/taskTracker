@@ -13,6 +13,31 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
 }));
 
+app.post("/checkToken", function(req,res) {
+  var token = req.body;
+  let options = {
+    port: config.ports.dbservice,
+    headers: {
+      "Content-Type": "text"
+    },
+    path: "/checkToken",
+    method: "POST"
+  }
+  let request = http.request(options, function(res) {
+    let chunks = "";
+    if(res.statusCode !== 200) {
+      ress.status(500).send("Error");
+    }
+    res.on("data", function(chunk) {
+      chunks+=chunk;
+    });
+    res.on("end", function() {
+      ress.send(chunks.toString());
+    })
+  });
+})
+
+
 app.post("/login", function(req, ress) {
   let body = req.body;
   console.log("trying to auth ", body);

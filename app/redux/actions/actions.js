@@ -1,10 +1,13 @@
 import * as ac from "./actionCreator";
 export const SET_HEADER = "SET_HEADER";
 export const SET_PROPOSED = "SET_PROPOSED";
+export const SET_TOKEN = "SET_TOKEN";
 
 
 export const initApp = ac.Action(SET_HEADER);
 export const setProposedPosts= ac.Action(SET_PROPOSED);
+export const setToken = ac.Action(SET_TOKEN);
+
 
 export const getProposed = function() {
   let callback = (dispatch, json) => {
@@ -18,5 +21,11 @@ export const sendPost = function(data) {
 }
 
 export const tryLogin = function(data) {
-  return ac.FetchPostAsync("/api/login", data);
+  const setT = (dispatch,data) => {
+    console.log(data);
+    if(data.length > 10) {
+      dispatch(setToken({data: data}));
+    }
+  }
+  return ac.FetchPostAsync("/api/login", data, setT);
 }

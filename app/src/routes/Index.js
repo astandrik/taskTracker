@@ -7,6 +7,8 @@ import {
 import React from "react";
 import Posts from "../containers/PostsContainer";
 import {connect} from "react-redux";
+import { getMatches, getProposed } from "../../redux/actions/actions";
+import store from "../../store";
 
 let Home = (props) => {
   return (
@@ -36,7 +38,7 @@ let IRouter = class IndexRouter extends React.Component {
       <Global header={this.props.header}/>
         <Switch>
           <Route exact path='/' component={Home}/>
-          <Route path='/postslist' component={Posts} />
+          <Route path='/postslist' render={() => {store.dispatch(getProposed()); return <Posts/>}}/>
         </Switch>
       </div>
     </Router>

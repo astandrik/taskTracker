@@ -1,17 +1,13 @@
-import {createStore, applyMiddleware,compose} from 'redux';
-import thunk from 'redux-thunk';
 import React from "react";
 import ReactDom from "react-dom";
 import "./src/app.css";
 import { Provider } from 'react-redux';
-import reducer from "./redux/reducer";
 import {initApp} from "./redux/actions/actions";
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { getMatches, getProposed } from "./redux/actions/actions";
 import Index from "./src/routes/Index";
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+import store from "./store";
 
-const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)));
 store.dispatch(initApp({header: "Who will win?"}));
 store.dispatch(getProposed());
 
@@ -22,3 +18,4 @@ ReactDom.render(
     </Provider>,
   document.getElementById("root")
 );
+
