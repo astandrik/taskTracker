@@ -1,7 +1,7 @@
 import React from "react";
 import PostsList from "../components/PostsList";
 import "./Posts.css";
-import Modal from "../components/Modal.js"
+import Modal from "../components/LoginModal.js"
 
 export default class Home extends  React.Component{
   constructor(props) {
@@ -22,8 +22,8 @@ export default class Home extends  React.Component{
     return (
       <div className="flexV full-height">
         <div className="workSpace">
-          <Modal visible={this.state.ModalVisible} hideModal={this.hideModal} sendPost={this.props.sendPost}/>
-          <button className="add_button" onClick={props.addMatch}/>
+          <Modal visible={this.state.ModalVisible} hideModal={this.hideModal} tryLogin={this.props.tryLogin}/>
+          <button className="add_button" onClick={this.showModal}>Login</button>
           <div className="who-win-list">
             <PostsList/>
           </div>

@@ -34,6 +34,34 @@ function randomString(len) {
 app.use(express.static(path.join(__dirname + '/../dist')));
 
 
+app.post("/api/login", (req,ress) => {
+  var body = req.body;
+  var options = {
+    method: "POST",
+    port: config.ports.auth,
+    headers: {
+      "Content-Type": "application/json"
+    },
+    path: "/login"
+  };
+  console.log("app server asking to login ", body);
+  var request = http.request(options, function(res) {
+    let chunks = '';
+    if(res.statusCode !== 200) {
+      ress.send("Error");
+    }
+    res.on("data", function(chunk) {
+      chunks += chunk
+    });
+    res.on("end", function() {
+      console.log(chunks);
+      ress.send(JSON.stringify(chunks));
+    })
+  });
+  request.write(JSON.stringify(body));
+  request.end();
+});
+
 app.post("/api/post", function(req, res) {
   console.log(req.body);
   res.send("sosi");

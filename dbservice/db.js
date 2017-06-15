@@ -50,11 +50,50 @@ var Post = seq.define('post', {
   }
 });
 
+var User = seq.define("user", {
+  id: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  name: {
+    type: Sequelize.STRING
+  },
+  password: {
+    type: Sequelize.STRING
+  }
+});
+
+var Token = seq.define("token", {
+  id: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  text: {
+    type: Sequelize.STRING
+  }
+});
+
 var insertPost = function(name, text) {
   return Post.create({
    name: name,
    text: text
   });
+}
+
+var insertToken = function(token) {
+  return Token.create( {
+    token
+  });
+}
+
+var getToken = function(token) {
+  return Token.findAll({
+    where: {
+      token: token
+    }
+  })
 }
 
 var getAllPosts = function() {
@@ -65,11 +104,47 @@ var createTables = () => {
   Post.sync({force: true}).then(() => {
 
   });
+  User.sync({force: true}).then(() => {
+    User.create({
+      name: "Admin",
+      password: "123"
+    })
+  });
+  Token.sync({force: true}).then(() => {
+
+  });
 }
+
+var bodyParser = require('body-parser')
+app.use( bodyParser.json() );       // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+  extended: true
+}));
 
 app.get("/dbcreate", function(req, res) {
   createTables();
   res.send("ok");
+});
+
+app.post("/verifyLogin", function(req,res) {
+  let user = req.body;
+  console.log("asking db to auth ", user);
+  User.findAll({
+    where: {
+      name: user.name,
+    },
+    attributes: ["password"]
+  }).then(data => {
+    if(data.length == 1) {
+      if(data[0].password == user.password) {
+        res.send("OK");
+      } else {
+        res.send("Invalid password");
+      }
+    } else {
+      res.send("Invalid login");
+    }
+  })
 })
 
 testConnection(sequelize);

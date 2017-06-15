@@ -16,3 +16,7 @@ export const getProposed = function() {
 export const sendPost = function(data) {
   return ac.FetchPostAsync("/api/post", data);
 }
+
+export const tryLogin = function(data) {
+  return ac.FetchPostAsync("/api/login", data);
+}
