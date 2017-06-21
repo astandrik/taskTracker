@@ -1,6 +1,6 @@
 import React from "react";
 import PostsList from "../components/PostsList";
-import "./Posts.css";
+import "./Posts.less";
 
 export default class Home extends  React.Component {
   render() {

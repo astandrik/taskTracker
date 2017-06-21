@@ -1,6 +1,6 @@
 import React from "react";
 import { connect } from 'react-redux';
-import "./Post.css";
+import "./Post.less";
 
 let Post = (props) => {
   return (

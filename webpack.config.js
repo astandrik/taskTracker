@@ -15,7 +15,8 @@ module.exports = {
         loaders: [
            { test: /\.css$/, loader: "style-loader!css-loader" },
             { test: /\.js$/,   loaders: ['react-hot-loader/webpack', 'babel-loader'], exclude: /node_modules/ },
-            { test: /\.jsx$/, loader: 'babel-loader', exclude: /node_modules/ }
+            { test: /\.jsx$/, loader: 'babel-loader', exclude: /node_modules/ },
+            {test: /\.less$/, loader: "style-loader!css-loader!less-loader"}
         ]
     },
     plugins: [
