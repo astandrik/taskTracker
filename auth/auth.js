@@ -13,16 +13,19 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
 }));
 
-app.post("/checkToken", function(req,res) {
-  var token = req.body;
+app.post("/checkToken", function(req,ress) {
+  console.log("checking token on request: auth");
+  var token = req.body.token;
+  console.log(token);
   let options = {
     port: config.ports.dbservice,
     headers: {
-      "Content-Type": "text"
+      "Content-Type": "application/json"
     },
     path: "/checkToken",
     method: "POST"
   }
+  console.log("request db for token check");
   let request = http.request(options, function(res) {
     let chunks = "";
     if(res.statusCode !== 200) {
@@ -35,6 +38,8 @@ app.post("/checkToken", function(req,res) {
       ress.send(chunks.toString());
     })
   });
+  request.write(JSON.stringify({token}));
+  request.end();
 })
 
 
@@ -51,9 +56,6 @@ app.post("/login", function(req, ress) {
   }
   let request = http.request(options, function(res) {
     let chunks = "";
-    if(res.statusCode !== 200) {
-      ress.status(500).send("Error");
-    }
     res.on("data", function(chunk) {
       chunks+=chunk;
     });

@@ -71,7 +71,7 @@ var Token = seq.define("token", {
     primaryKey: true,
     autoIncrement: true
   },
-  text: {
+  token: {
     type: Sequelize.STRING
   }
 });
@@ -90,6 +90,7 @@ var insertToken = function(token) {
 }
 
 var checkT = function(token) {
+  console.log(token);
   return Token.findAll({
     where: {
       token: token
@@ -128,7 +129,9 @@ app.get("/dbcreate", function(req, res) {
 });
 
 app.post("/checkToken", function(req,res) {
-  var token = req.body;
+  var token = req.body.token;
+  console.log("checking token on request: dbservice");
+  console.log(token);
   checkT(token).then((data) => {
     if(data.length > 0) {
       res.send("valid");

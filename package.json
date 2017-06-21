@@ -7,7 +7,11 @@
     "coverage": "jest --coverage",
     "test": "jest --verbose",
     "test-watch": "jest --watch --notify",
-    "dev": "webpack-dev-server --watch"
+    "dev": "webpack-dev-server --watch",
+    "start-services": "node node/index.js & node dbservice/db.js & node auth/auth.js &",
+    "restart-services": "npm run stop-services; npm run start-services",
+    "stop-services": "./stop.sh",
+    "select-services": "ps aux | grep \"dbservice\\|index.js\\|auth.js\" "
   },
   "author": "",
   "license": "ISC",

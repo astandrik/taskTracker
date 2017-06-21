@@ -33,12 +33,14 @@ function randomString(len) {
 
 app.use(express.static(path.join(__dirname + '/../')));
 
-app.use(function (req, res, next) {
-  let token = req.header["x-acces-token"];
-  if(~req.originalUrl.indexOf("login")) {
+app.use(function (req, ress, next) {
+  let token = req.headers["x-access-token"];
+  console.log(token);
+  if(~req.originalUrl.indexOf("login") || ~req.originalUrl.indexOf("db/") ) {
     next();
   } else if(~req.originalUrl.indexOf("api")) {
-    if(!token) {res.send("Unauthorized request"); return}
+    if(!token) {ress.send("Unauthorized request"); return}
+    console.log("checking token on request: node");
     var options = {
       method: "POST",
       port: config.ports.auth,
@@ -49,9 +51,6 @@ app.use(function (req, res, next) {
     };
     var request = http.request(options, function(res) {
       let chunks = '';
-      if(res.statusCode !== 200) {
-        ress.send("Error");
-      }
       res.on("data", function(chunk) {
         chunks += chunk
       });
@@ -60,7 +59,8 @@ app.use(function (req, res, next) {
         next();
       })
     });
-    request.write(JSON.stringify(token));
+    let t = {token};
+    request.write(JSON.stringify(t));
     request.end();
   } else {
     next();
@@ -80,14 +80,10 @@ app.post("/api/login", (req,ress) => {
   console.log("app server asking to login ", body);
   var request = http.request(options, function(res) {
     let chunks = '';
-    if(res.statusCode !== 200) {
-      ress.send("Error");
-    }
     res.on("data", function(chunk) {
       chunks += chunk
     });
     res.on("end", function() {
-      console.log(chunks);
       ress.send(JSON.stringify(chunks));
     })
   });
@@ -102,6 +98,7 @@ app.post("/api/post", function(req, res) {
 
 
 app.get('/api/proposed', function(req, ress) {
+  console.log("request initiated");
   var req = https.get('https://2ch.hk/b/', function(res) {
     // Buffer the body entirely for processing as a whole.
     var bodyChunks = [];
@@ -122,7 +119,7 @@ app.get('/api/proposed', function(req, ress) {
 
 
 
-app.get('/api/dbcreate', function(req,ress) {
+app.get('/db/dbcreate', function(req,ress) {
   http.get("http://127.0.0.1:" + config.ports.dbservice + "/dbcreate", function(res) {
     var body = '';
     res.on('data', function(chunk) {
