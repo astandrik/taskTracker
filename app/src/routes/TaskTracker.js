@@ -1,6 +1,6 @@
 import React from "react";
-import PostsList from "../components/PostsList";
-import "./Posts.less";
+import TasksList from "../components/TasksList";
+import "./TasksList.less";
 
 export default class Home extends  React.Component {
   render() {
@@ -8,12 +8,9 @@ export default class Home extends  React.Component {
     let list = [];
     return (
       <div className="flexV full-height">
-        <div className="workSpace">
-          <div className="who-win-list">
-            <PostsList/>
-          </div>
-        </div>
+            <TasksList/>
       </div>
     );
   }
 }
+

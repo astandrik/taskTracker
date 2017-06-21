@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./src/app.css";
+import "./src/app.less";
 import { Provider } from 'react-redux';
 import {initApp} from "./redux/actions/actions";
 import { composeWithDevTools } from 'redux-devtools-extension';

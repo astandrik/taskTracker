@@ -5,7 +5,8 @@ var express = require('express')
   ,https = require('https'),
   http = require('http'),
   fs= require('fs');
-  var path = require('path');
+  var path = require('path'),
+      httpHelper = require("../httpHelper");
 const bodyParse = require('./bodyParse');
 
 app.listen(port, () => {
@@ -49,19 +50,11 @@ app.use(function (req, ress, next) {
       },
       path: "/checkToken"
     };
-    var request = http.request(options, function(res) {
-      let chunks = '';
-      res.on("data", function(chunk) {
-        chunks += chunk
-      });
-      res.on("end", function() {
-        console.log(chunks);
-        next();
-      })
-    });
     let t = {token};
-    request.write(JSON.stringify(t));
-    request.end();
+    httpHelper.makeRequest(options, t).then(data => {
+      console.log(chunks);
+      next();
+    })
   } else {
     next();
   }
@@ -78,23 +71,48 @@ app.post("/api/login", (req,ress) => {
     path: "/login"
   };
   console.log("app server asking to login ", body);
-  var request = http.request(options, function(res) {
-    let chunks = '';
-    res.on("data", function(chunk) {
-      chunks += chunk
-    });
-    res.on("end", function() {
-      ress.send(JSON.stringify(chunks));
-    })
-  });
-  request.write(JSON.stringify(body));
-  request.end();
+  httpHelper.makeRequest(options, body).then(data => {
+    ress.send(JSON.stringify(data));
+  })
 });
 
 app.post("/api/post", function(req, res) {
   console.log(req.body);
   res.send("sosi");
 })
+
+
+
+app.get("/api/tasks", function(req,res) {
+  var options = {
+    method: "GET",
+    port: config.ports.dbservice,
+    headers: {
+      "Content-Type": "application/json"
+    },
+    path: "/tasks"
+  };
+  console.log("app server asking to login ", body);
+  httpHelper.makeRequest(options, body).then(data => {
+    res.send(JSON.stringify(data));
+  })
+});
+
+app.post("/api/task", function(req, res) {
+  var body = req.body;
+  var options = {
+    method: "POST",
+    port: config.ports.dbservice,
+    headers: {
+      "Content-Type": "application/json"
+    },
+    path: "/task"
+  };
+  console.log("app server asking to login ", body);
+  httpHelper.makeRequest(options, body).then(data => {
+    res.send(JSON.stringify(data));
+  })
+});
 
 
 app.get('/api/proposed', function(req, ress) {
@@ -116,8 +134,6 @@ app.get('/api/proposed', function(req, ress) {
     console.log('ERROR: ' + e.message);
   });
 });
-
-
 
 app.get('/db/dbcreate', function(req,ress) {
   http.get("http://127.0.0.1:" + config.ports.dbservice + "/dbcreate", function(res) {

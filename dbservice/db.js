@@ -65,6 +65,20 @@ var User = seq.define("user", {
   }
 });
 
+var Task = seq.define("task", {
+  id: {
+    type: Sequelize.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  name: {
+    type: Sequelize.STRING
+  },
+  text: {
+    type: Sequelize.STRING
+  }
+})
+
 var Token = seq.define("token", {
   id: {
     type: Sequelize.INTEGER,
@@ -115,6 +129,9 @@ var createTables = () => {
   Token.sync({force: true}).then(() => {
 
   });
+  Task.sync({force: true}).then(() => {
+
+  });
 }
 
 var bodyParser = require('body-parser')
@@ -127,6 +144,22 @@ app.get("/dbcreate", function(req, res) {
   createTables();
   res.send("ok");
 });
+
+app.get("/tasks", function(req, res) {
+  Task.findAll().then(data => {
+    res.send(JSON.stringify(data));
+  })
+})
+
+app.post("/task", function(req, res)  {
+  let task = req.body.task;
+  Task.create({
+    name: task.name,
+    text: task.text
+  }).then((data) => {
+    res.send(JSON.stringify(data.id));
+  });
+})
 
 app.post("/checkToken", function(req,res) {
   var token = req.body.token;

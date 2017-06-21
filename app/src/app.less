@@ -1,0 +1,48 @@
+#root {
+  height: 100vh;
+}
+
+.flexV {
+  display: flex;
+  flex-direction: column;
+}
+
+body {
+  margin: 0;
+}
+
+.header {
+  width: 100%;
+  height: 10%;
+  border-bottom: 1px black solid;
+  .sub-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+.links {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.global-header {
+  margin-top: 0;
+  padding-top: 5px;
+}
+
+.link-button {
+  text-decoration: none;
+  color: black;
+  flex:1;
+  line-height: 30px;
+  &:hover {
+    background-color: rgba(0,0,0,0.1)
+  }
+  transition: all 0.3s ease-out 0.1s;
+  width: 200px;
+  height: 30px;
+  text-align: center;
+}

@@ -1,7 +1,7 @@
 let express = require("express"),
     app = express(),
     config = require("../config"),
-    http = require("http");
+    httpHelper = require("../httpHelper");
 
 app.listen(config.ports.auth, function() {
   console.log("Auth service listening on " + config.ports.auth);
@@ -26,20 +26,9 @@ app.post("/checkToken", function(req,ress) {
     method: "POST"
   }
   console.log("request db for token check");
-  let request = http.request(options, function(res) {
-    let chunks = "";
-    if(res.statusCode !== 200) {
-      ress.status(500).send("Error");
-    }
-    res.on("data", function(chunk) {
-      chunks+=chunk;
-    });
-    res.on("end", function() {
-      ress.send(chunks.toString());
-    })
-  });
-  request.write(JSON.stringify({token}));
-  request.end();
+  httpHelper.makeRequest(options,{token}).then(data => {
+      ress.send(data.toString());
+  })
 })
 
 
@@ -53,16 +42,8 @@ app.post("/login", function(req, ress) {
     },
     path: "/verifyLogin",
     method: "POST"
-  }
-  let request = http.request(options, function(res) {
-    let chunks = "";
-    res.on("data", function(chunk) {
-      chunks+=chunk;
-    });
-    res.on("end", function() {
-      ress.send(chunks.toString());
-    })
-  });
-  request.write(JSON.stringify(body));
-  request.end();
+  };
+  httpHelper.makeRequest(options, body).then(data => {
+      ress.send(data.toString());
+  })
 })

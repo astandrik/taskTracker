@@ -10,7 +10,12 @@ const Home = combineReducers({
   token: homeReducer.token
 });
 
+const Tasks = combineReducers({
+  tasks: homeReducer.tasks
+});
+
 export default combineReducers({
   Home,
-  Posts
+  Posts,
+  Tasks
 });
