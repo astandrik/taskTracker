@@ -3,7 +3,8 @@ var path = require("path");
 const CleanWebpackPlugin = require('clean-webpack-plugin'); //installed via npm
 
 module.exports = {
-    entry: "./app/index.js",
+    entry: [
+      'react-hot-loader/patch',"./app/index.js"],
     devtool: "source-map",
     output: {
         path: path.resolve('dist'),
@@ -13,7 +14,7 @@ module.exports = {
     module: {
         loaders: [
            { test: /\.css$/, loader: "style-loader!css-loader" },
-            { test: /\.js$/, loader: 'babel-loader', exclude: /node_modules/ },
+            { test: /\.js$/,   loaders: ['react-hot-loader/webpack', 'babel-loader'], exclude: /node_modules/ },
             { test: /\.jsx$/, loader: 'babel-loader', exclude: /node_modules/ }
         ]
     },

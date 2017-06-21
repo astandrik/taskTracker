@@ -9,12 +9,21 @@
 
 .modal-window {
   position: fixed;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
   width: 200px;
-  height: 200px;
+  height: 250px;
+  padding:50px;
   margin: auto;
   background: white;
+}
+
+.login-form {
+  height: 100px; 
 }

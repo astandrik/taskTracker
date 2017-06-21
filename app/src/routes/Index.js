@@ -9,6 +9,7 @@ import Posts from "../containers/PostsContainer";
 import {connect} from "react-redux";
 import { getMatches, getProposed } from "../../redux/actions/actions";
 import store from "../../store";
+import Modal from "../components/LoginModal.js"
 
 let Home = (props) => {
   return (
@@ -17,6 +18,18 @@ let Home = (props) => {
 }
 
 class Global extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {ModalVisible: false};
+    this.showModal = this.showModal.bind(this);
+    this.hideModal = this.hideModal.bind(this);
+  }
+  showModal() {
+    this.setState({ModalVisible: true})
+  }
+  hideModal() {
+    this.setState({ModalVisible: false})
+  }
   render() {
     let props = this.props;
     return (
@@ -24,6 +37,8 @@ class Global extends React.Component {
         <h3>{props.header}</h3>
         <Link to="/">Домой</Link>
         <Link to="/postslist">Список Постов</Link>
+        <button className="add_button" onClick={this.showModal}>Login</button>
+        <Modal visible={this.state.ModalVisible} hideModal={this.hideModal} tryLogin={this.props.tryLogin}/>
       </div>
     )
   }

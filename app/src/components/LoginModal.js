@@ -26,7 +26,7 @@ class Modal extends React.Component {
     return (
       <div className="backdrop">
         <div className="modal-window">
-          <h1> Введите сообщение </h1>
+          <h1> Введите Хуи </h1>
           <form action="/api/form" onSubmit={this.handleSubmit.bind(this)}>
             <label>
               Имя
