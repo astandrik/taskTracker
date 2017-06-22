@@ -9,11 +9,10 @@ app.listen(port, () => {
 });
 var Sequelize = require('sequelize');
 
-var seq = new Sequelize('whowin', 'root', '123', {
+var seq = new Sequelize('whowin', 'postgres', '123', {
     host: 'localhost',
-    dialect: 'mysql',
-    port: 3306,
-
+    dialect: 'postgres',
+    port: 5432,
     pool: {
       max: 5,
       min: 0,
@@ -21,7 +20,6 @@ var seq = new Sequelize('whowin', 'root', '123', {
     },
 
     });
-
 
 var sequelize = seq;
 
