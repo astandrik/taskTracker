@@ -1,12 +1,12 @@
 import React from "react";
-import "./Modal.less";
+import "../Modal.less";
 
 class Modal extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      name: "Admin",
-      password: ""
+      name: "",
+      text: ""
     }
   }
   handleChange(event) {
@@ -15,7 +15,7 @@ class Modal extends React.Component {
   }
   handleSubmit(event) {
     event.preventDefault();
-    this.props.tryLogin(this.state);
+    this.props.addTask(this.state);
     this.props.hideModal();
   }
   render() {
@@ -26,15 +26,15 @@ class Modal extends React.Component {
     return (
       <div className="backdrop">
         <div className="modal-window">
-          <h1> Авторизуйтесь </h1>
-          <form action="/api/form" onSubmit={this.handleSubmit.bind(this)}>
+          <h1> Создание задачи </h1>
+          <form className="login-form" onSubmit={this.handleSubmit.bind(this)}>
             <label>
-              Имя
+              Название:
               <input name="name" value={this.state.name} onChange={this.handleChange.bind(this)}/>
             </label>
             <label>
-              Пароль:
-              <input name="password" value={this.state.password} onChange={this.handleChange.bind(this)}/>
+              Описание:
+              <textarea name="text" value={this.state.message} onChange={this.handleChange.bind(this)}/>
             </label>
             <input type="submit" value="Submit" />
           </form>
@@ -44,4 +44,5 @@ class Modal extends React.Component {
   }
 }
 
-export default Modal;
+export default Modal
+

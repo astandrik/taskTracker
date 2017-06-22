@@ -1,5 +1,5 @@
 import React from "react";
-import "./Modal.less";
+import "../Modal.less";
 
 class Modal extends React.Component {
   constructor(props) {
@@ -44,4 +44,5 @@ class Modal extends React.Component {
   }
 }
 
-export default Modal;
+export default Modal
+

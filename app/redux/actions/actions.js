@@ -21,10 +21,40 @@ export const sendPost = function(data) {
   return ac.FetchPostAsync("/api/post", data);
 }
 
+function setCookie(name, value, options) {
+  options = options || {};
+
+  var expires = options.expires;
+
+  if (typeof expires == "number" && expires) {
+    var d = new Date();
+    d.setTime(d.getTime() + expires * 1000);
+    expires = options.expires = d;
+  }
+  if (expires && expires.toUTCString) {
+    options.expires = expires.toUTCString();
+  }
+
+  value = encodeURIComponent(value);
+
+  var updatedCookie = name + "=" + value;
+
+  for (var propName in options) {
+    updatedCookie += "; " + propName;
+    var propValue = options[propName];
+    if (propValue !== true) {
+      updatedCookie += "=" + propValue;
+    }
+  }
+
+  document.cookie = updatedCookie;
+}
+
 export const tryLogin = function(data) {
   const setT = (dispatch,data) => {
     console.log(data);
     if(data.length > 10) {
+      setCookie("token", data);
       dispatch(setToken({data: data}));
     }
   }
@@ -33,7 +63,8 @@ export const tryLogin = function(data) {
 
 export const getTasks = function() {
   const callback = (dispatch, data) => {
-    dispatch(setTasks({data: data}));
+    console.log(data);
+    dispatch(setTasks({data: JSON.parse(data)}));
   }
   return ac.FetchAsync("/api/tasks", callback);
 }

@@ -52,7 +52,7 @@ app.use(function (req, ress, next) {
     };
     let t = {token};
     httpHelper.makeRequest(options, t).then(data => {
-      console.log(chunks);
+      console.log("auth answered " + data);
       next();
     })
   } else {
@@ -92,8 +92,7 @@ app.get("/api/tasks", function(req,res) {
     },
     path: "/tasks"
   };
-  console.log("app server asking to login ", body);
-  httpHelper.makeRequest(options, body).then(data => {
+  httpHelper.makeRequest(options).then(data => {
     res.send(JSON.stringify(data));
   })
 });
@@ -109,7 +108,7 @@ app.post("/api/task", function(req, res) {
     path: "/task"
   };
   console.log("app server asking to login ", body);
-  httpHelper.makeRequest(options, body).then(data => {
+  httpHelper.makeRequest(options, {task: body}).then(data => {
     res.send(JSON.stringify(data));
   })
 });

@@ -27,8 +27,9 @@ app.post("/checkToken", function(req,ress) {
   }
   console.log("request db for token check");
   httpHelper.makeRequest(options,{token}).then(data => {
+      console.log("db answered " + data.toString());
       ress.send(data.toString());
-  })
+  });
 })
 
 

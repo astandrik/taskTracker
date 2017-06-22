@@ -20,12 +20,19 @@ reducer.tasks = function(state = [], action) {
   }
 }
 
+function getCookie(name) {
+  var matches = document.cookie.match(new RegExp(
+    "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+  ));
+  return matches ? decodeURIComponent(matches[1]) : undefined;
+}
+
 reducer.token = function(state = '', action) {
   switch (action.type) {
     case SET_TOKEN:
       return action.data
     default:
-      return state
+      return getCookie("token") ? getCookie("token") : state;
   }
 }
 

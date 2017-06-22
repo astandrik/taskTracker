@@ -16,9 +16,9 @@ store.dispatch(getProposed());
 const render = Component => {
   ReactDOM.render(
     <AppContainer>
-     <Provider store={store}>
-       <Component/>
-      </Provider>
+        <Provider store={store}>
+          <Component/>
+        </Provider>
     </AppContainer>,
     document.getElementById('root')
   )

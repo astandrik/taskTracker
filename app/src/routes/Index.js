@@ -7,10 +7,11 @@ import {
 import React from "react";
 import Posts from "../containers/PostsContainer";
 import {connect} from "react-redux";
-import { getMatches, getProposed } from "../../redux/actions/actions";
+import { getMatches, getProposed, getTasks} from "../../redux/actions/actions";
 import store from "../../store";
 import {tryLogin} from "../../redux/actions/actions";
-import Modal from "../components/LoginModal.js"
+import Modal from "../components/Modals/LoginModal.js";
+import TaskTracker from "./TaskTracker";
 
 let Home = (props) => {
   return (
@@ -70,6 +71,7 @@ let IRouter = class IndexRouter extends React.Component {
         <Switch>
           <Route exact path='/' component={Home}/>
           <Route path='/postslist' render={() => {store.dispatch(getProposed()); return <Posts/>}}/>
+          <Route path='/tasks' render={() => {store.dispatch(getTasks()); return <TaskTracker/>}}/>
         </Switch>
       </div>
     </Router>
