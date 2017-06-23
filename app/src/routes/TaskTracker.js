@@ -4,6 +4,7 @@ import TaskModal from "../components/Modals/TaskModal";
 import "./TasksList.less";
 import {addTask} from "../../redux/actions/actions";
 import {connect} from "react-redux";
+import ReactSVG from 'react-svg'
 
 class TaskTracker extends  React.Component {
   constructor(props) {
@@ -24,7 +25,12 @@ class TaskTracker extends  React.Component {
     return (
       <div className="flexV full-height">
           <div className="tasks-area">
-            <button className="add-task-button" onClick={this.showModal}>Добавить задачу</button>
+            <div onClick={this.showModal}>
+              <ReactSVG
+                path="app/src/Icons/plus.svg"
+                className="add-task-plus"
+              />
+            </div>
           </div>
             <TaskModal visible={this.state.ModalVisible} hideModal={this.hideModal} addTask={this.props.addTask}/>
             <TasksList/>

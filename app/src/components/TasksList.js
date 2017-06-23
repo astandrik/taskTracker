@@ -44,7 +44,7 @@ class TasksList extends React.Component {
     let tasks = props.tasks;
     let tasksList = tasks.map(x => <TaskElem key={x.id} objid={x.id} name={x.name} text={x.text} update={props.updateTask} delete={props.deleteTask}/>);
     return (
-      <div>
+      <div className="tasks-container">
         <div className="tasks">
           {tasksList}
         </div>
