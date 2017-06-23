@@ -36,12 +36,10 @@ app.use(express.static(path.join(__dirname + '/../')));
 
 app.use(function (req, ress, next) {
   let token = req.headers["x-access-token"];
-  console.log(token);
   if(~req.originalUrl.indexOf("login") || ~req.originalUrl.indexOf("db/") ) {
     next();
   } else if(~req.originalUrl.indexOf("api")) {
     if(!token) {ress.send("Unauthorized request"); return}
-    console.log("checking token on request: node");
     var options = {
       method: "POST",
       port: config.ports.auth,
@@ -52,7 +50,6 @@ app.use(function (req, ress, next) {
     };
     let t = {token};
     httpHelper.makeRequest(options, t).then(data => {
-      console.log("auth answered " + data);
       next();
     })
   } else {
@@ -70,17 +67,10 @@ app.post("/api/login", (req,ress) => {
     },
     path: "/login"
   };
-  console.log("app server asking to login ", body);
   httpHelper.makeRequest(options, body).then(data => {
     ress.send(JSON.stringify(data));
   })
 });
-
-app.post("/api/post", function(req, res) {
-  console.log(req.body);
-  res.send("sosi");
-})
-
 
 
 app.get("/api/tasks", function(req,res) {
@@ -107,7 +97,6 @@ app.post("/api/task", function(req, res) {
     },
     path: "/task"
   };
-  console.log("app server asking to login ", body);
   httpHelper.makeRequest(options, {task: body}).then(data => {
     res.send(JSON.stringify(data));
   })

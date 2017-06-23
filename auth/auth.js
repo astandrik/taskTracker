@@ -14,9 +14,7 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 }));
 
 app.post("/checkToken", function(req,ress) {
-  console.log("checking token on request: auth");
   var token = req.body.token;
-  console.log(token);
   let options = {
     port: config.ports.dbservice,
     headers: {
@@ -25,9 +23,7 @@ app.post("/checkToken", function(req,ress) {
     path: "/checkToken",
     method: "POST"
   }
-  console.log("request db for token check");
   httpHelper.makeRequest(options,{token}).then(data => {
-      console.log("db answered " + data.toString());
       ress.send(data.toString());
   });
 })
@@ -35,7 +31,6 @@ app.post("/checkToken", function(req,ress) {
 
 app.post("/login", function(req, ress) {
   let body = req.body;
-  console.log("trying to auth ", body);
   let options = {
     port: config.ports.dbservice,
     headers: {

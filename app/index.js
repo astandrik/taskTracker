@@ -9,7 +9,7 @@ import Index from "./src/routes/Index";
 import store from "./store";
 import { AppContainer } from 'react-hot-loader'
 
-store.dispatch(initApp({header: "Who will win?"}));
+store.dispatch(initApp({header: "Yet another task tracker"}));
 store.dispatch(getProposed());
 
 
@@ -27,6 +27,5 @@ const render = Component => {
 render(Index);
 
 if (module.hot) {
-  console.log("hui");
   module.hot.accept("./src/routes/Index", () => { render(Index) })
 }

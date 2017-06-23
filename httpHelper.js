@@ -2,7 +2,6 @@ let http = require("http");
 
 function makeRequest(options, body) {
   let request = new Promise((resolve, reject) => {
-    console.log("hui");
     let reqq = http.request(options, function(res) {
       let chunks = '';
       res.on("data", function(chunk) {

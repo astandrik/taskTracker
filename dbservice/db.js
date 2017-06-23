@@ -69,6 +69,12 @@ var Task = seq.define("task", {
     primaryKey: true,
     autoIncrement: true
   },
+  position: {
+    type: Sequelize.INTEGER
+  },
+  active: {
+    type: Sequelize.BOOLEAN
+  },
   name: {
     type: Sequelize.STRING
   },
@@ -102,7 +108,6 @@ var insertToken = function(token) {
 }
 
 var checkT = function(token) {
-  console.log(token);
   return Token.findAll({
     where: {
       token: token
@@ -151,18 +156,32 @@ app.get("/tasks", function(req, res) {
 
 app.post("/task", function(req, res)  {
   let task = req.body.task;
-  Task.create({
-    name: task.name,
-    text: task.text
-  }).then((data) => {
-    res.send(JSON.stringify(data.id));
-  });
+  let promise;
+  console.log();
+  if(task.id) {
+    Task.update({
+        name: task.name,
+        text: task.text,
+        active: task.active
+      },{where: {id: task.id}}).then((data) => {
+      res.send(JSON.stringify(data.id));
+    });
+  } else {
+    let makePromise =  (max) => {
+      Task.create({
+        name: task.name,
+        text: task.text,
+        active: true
+      }).then((data) => {
+        res.send(JSON.stringify(data.id));
+      });
+    }
+    Task.findAll().then(data => makePromise(data.length + 1));
+  };
 })
 
 app.post("/checkToken", function(req,res) {
   var token = req.body.token;
-  console.log("checking token on request: dbservice");
-  console.log(token);
   checkT(token).then((data) => {
     if(data.length > 0) {
       res.send("valid");
@@ -174,7 +193,6 @@ app.post("/checkToken", function(req,res) {
 
 app.post("/verifyLogin", function(req,res) {
   let user = req.body;
-  console.log("asking db to auth ", user);
   User.findAll({
     where: {
       name: user.name,
