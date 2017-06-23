@@ -99,9 +99,23 @@ app.post("/api/task", function(req, res) {
   };
   httpHelper.makeRequest(options, {task: body}).then(data => {
     res.send(JSON.stringify(data));
-  })
+  });
 });
 
+app.delete("/api/task", function(req, res) {
+  var body = req.body;
+  var options = {
+    method: "DELETE",
+    port: config.ports.dbservice,
+    headers: {
+      "Content-Type": "application/json"
+    },
+    path: ("/task/"+body.id)
+  };
+  httpHelper.makeRequest(options).then(data => {
+    res.send(JSON.stringify(data));
+  });
+});
 
 app.get('/api/proposed', function(req, ress) {
   console.log("request initiated");

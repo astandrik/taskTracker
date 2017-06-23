@@ -2,7 +2,8 @@ var config = require("../config");
 var express = require("express"),
     app = express(),
     port = config.ports.dbservice;
-var jwt    = require('jsonwebtoken');
+var jwt    = require('jsonwebtoken'),
+    Tasks = require("./Tasks");
 
 app.listen(port, () => {
   console.log("db service listening on " + port);
@@ -22,6 +23,7 @@ var seq = new Sequelize('whowin', 'postgres', '123', {
     });
 
 var sequelize = seq;
+Tasks(seq, app);
 
 function testConnection(sequelize) {
   sequelize
@@ -63,25 +65,7 @@ var User = seq.define("user", {
   }
 });
 
-var Task = seq.define("task", {
-  id: {
-    type: Sequelize.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
-  },
-  position: {
-    type: Sequelize.INTEGER
-  },
-  active: {
-    type: Sequelize.BOOLEAN
-  },
-  name: {
-    type: Sequelize.STRING
-  },
-  text: {
-    type: Sequelize.STRING
-  }
-})
+
 
 var Token = seq.define("token", {
   id: {
@@ -148,37 +132,6 @@ app.get("/dbcreate", function(req, res) {
   res.send("ok");
 });
 
-app.get("/tasks", function(req, res) {
-  Task.findAll().then(data => {
-    res.send(JSON.stringify(data));
-  })
-})
-
-app.post("/task", function(req, res)  {
-  let task = req.body.task;
-  let promise;
-  console.log();
-  if(task.id) {
-    Task.update({
-        name: task.name,
-        text: task.text,
-        active: task.active
-      },{where: {id: task.id}}).then((data) => {
-      res.send(JSON.stringify(data.id));
-    });
-  } else {
-    let makePromise =  (max) => {
-      Task.create({
-        name: task.name,
-        text: task.text,
-        active: true
-      }).then((data) => {
-        res.send(JSON.stringify(data.id));
-      });
-    }
-    Task.findAll().then(data => makePromise(data.length + 1));
-  };
-})
 
 app.post("/checkToken", function(req,res) {
   var token = req.body.token;

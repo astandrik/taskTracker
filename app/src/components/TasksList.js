@@ -1,5 +1,5 @@
 import React from "react";
-import {updateTask} from "../../redux/actions/actions";
+import {updateTask, deleteTask} from "../../redux/actions/actions";
 import {connect} from "react-redux";
 import PropTypes from 'prop-types';
 
@@ -23,6 +23,7 @@ class TaskElem extends React.Component{
         <input onChange={this.onChange} value={this.state.name} name="name"/>
         <textarea onChange={this.onChange} value={this.state.text} name="text"/>
         <button onClick={props.update.bind(this, this.state)}> Обновить </button>
+        <button onClick={props.delete.bind(this, this.state)}> Удалить </button>
       </div>
     );
   }
@@ -41,7 +42,7 @@ class TasksList extends React.Component {
   render() {
     let props = this.props;
     let tasks = props.tasks;
-    let tasksList = tasks.map(x => <TaskElem key={x.id} objid={x.id} name={x.name} text={x.text} update={props.updateTask}/>);
+    let tasksList = tasks.map(x => <TaskElem key={x.id} objid={x.id} name={x.name} text={x.text} update={props.updateTask} delete={props.deleteTask}/>);
     return (
       <div>
         <div className="tasks">
@@ -62,6 +63,9 @@ let mapDispatchToProps = (dispatch) => {
   return {
     updateTask(task) {
       dispatch(updateTask(task));
+    },
+    deleteTask(task) {
+      dispatch(deleteTask(task));
     }
   }
 }

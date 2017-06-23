@@ -3,8 +3,8 @@ export const SET_HEADER = "SET_HEADER";
 export const SET_PROPOSED = "SET_PROPOSED";
 export const SET_TOKEN = "SET_TOKEN";
 
-import {getTasks, setTasks, updateTask, addTask, SET_TASKS} from "./taskActions";
-export {getTasks, setTasks, updateTask, addTask, SET_TASKS};
+import {getTasks, setTasks, updateTask, addTask, deleteTask, SET_TASKS} from "./taskActions";
+export {getTasks, setTasks, updateTask, addTask, deleteTask, SET_TASKS};
 import helpers from "../../helperFunctions/helpers";
 
 let setCookie = helpers.setCookie;
