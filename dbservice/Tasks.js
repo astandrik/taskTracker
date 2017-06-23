@@ -26,7 +26,7 @@ module.exports = function(seq, app) {
     Task.findAll({order: '"position" DESC' }).then(data => {
       res.send(JSON.stringify(data));
     });
-  })
+  });
 
   app.delete("/task/:id", function(req,res) {
     let id = req.params.id;
@@ -38,6 +38,7 @@ module.exports = function(seq, app) {
   });
 
   app.post("/task", function(req, res)  {
+    console.log(req.body);
     let task = req.body.task;
     let promise;
     if(task.id) {

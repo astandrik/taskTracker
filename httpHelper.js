@@ -11,7 +11,7 @@ function makeRequest(options, body) {
         resolve(chunks);
       })
     });
-    if(options.method.match(/POST/)) {
+    if(options.method === "POST") {      
       reqq.write(JSON.stringify(body));
     }
     reqq.end();

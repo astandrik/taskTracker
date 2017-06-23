@@ -23,7 +23,6 @@ var seq = new Sequelize('whowin', 'postgres', '123', {
     });
 
 var sequelize = seq;
-Tasks(seq, app);
 
 function testConnection(sequelize) {
   sequelize
@@ -126,6 +125,9 @@ app.use( bodyParser.json() );       // to support JSON-encoded bodies
 app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
   extended: true
 }));
+
+Tasks(seq, app);
+
 
 app.get("/dbcreate", function(req, res) {
   createTables();
