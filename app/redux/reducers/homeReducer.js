@@ -1,15 +1,7 @@
-import {SET_TASKS,SET_HEADER, SET_PROPOSED, SET_TOKEN} from "../actions/actions";
+import {SET_TASKS,SET_HEADER, SET_TOKEN} from "../actions/actions";
 
 let reducer = {};
 
-reducer.proposed = function(state = [], action) {
-  switch (action.type) {
-    case SET_PROPOSED:
-      return action.data;
-    default:
-      return state;
-  }
-}
 
 reducer.tasks = function(state = [], action) {
   switch (action.type) {

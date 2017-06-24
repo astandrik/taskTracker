@@ -10,7 +10,6 @@ import store from "./store";
 import { AppContainer } from 'react-hot-loader'
 
 store.dispatch(initApp({header: "Yet another task tracker"}));
-store.dispatch(getProposed());
 
 
 const render = Component => {

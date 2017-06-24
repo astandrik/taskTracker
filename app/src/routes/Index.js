@@ -5,9 +5,8 @@ import {
   Switch
 } from 'react-router-dom'
 import React from "react";
-import Posts from "../containers/PostsContainer";
 import {connect} from "react-redux";
-import { getMatches, getProposed, getTasks} from "../../redux/actions/actions";
+import { getMatches, getTasks} from "../../redux/actions/actions";
 import store from "../../store";
 import {tryLogin} from "../../redux/actions/actions";
 import Modal from "../components/Modals/LoginModal.js";
@@ -42,7 +41,6 @@ class Global extends React.Component {
         </div>
         <div className="links">
           <Link className="link-button" to="/">Домой</Link>
-          <Link  className="link-button" to="/postslist">Список Постов</Link>
           <Link  className="link-button" to="/tasks">Задачи</Link>
         </div>
         <Modal visible={this.state.ModalVisible} hideModal={this.hideModal} tryLogin={this.props.tryLogin}/>
