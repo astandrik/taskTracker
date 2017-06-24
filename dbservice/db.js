@@ -5,6 +5,8 @@ var express = require("express"),
 var jwt    = require('jsonwebtoken'),
     Tasks = require("./Tasks");
 
+var Task = Tasks.TaskModel;
+
 app.listen(port, () => {
   console.log("db service listening on " + port);
 });
@@ -102,6 +104,14 @@ var getAllPosts = function() {
   return Post.findAll();
 }
 
+var bodyParser = require('body-parser')
+app.use( bodyParser.json() );       // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+  extended: true
+}));
+
+var Task = Tasks(seq, app);
+
 var createTables = () => {
   Post.sync({force: true}).then(() => {
 
@@ -120,13 +130,6 @@ var createTables = () => {
   });
 }
 
-var bodyParser = require('body-parser')
-app.use( bodyParser.json() );       // to support JSON-encoded bodies
-app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
-  extended: true
-}));
-
-Tasks(seq, app);
 
 
 app.get("/dbcreate", function(req, res) {

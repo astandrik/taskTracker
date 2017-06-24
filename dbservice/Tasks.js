@@ -2,26 +2,25 @@
 var Sequelize = require('sequelize');
 
 module.exports = function(seq, app) {
-   var Task = seq.define("task", {
-    id: {
-      type: Sequelize.INTEGER,
-      primaryKey: true,
-      autoIncrement: true
-    },
-    position: {
-      type: Sequelize.INTEGER
-    },
-    active: {
-      type: Sequelize.BOOLEAN
-    },
-    name: {
-      type: Sequelize.STRING
-    },
-    text: {
-      type: Sequelize.STRING
-    }
+  var Task = seq.define("task", {
+   id: {
+     type: Sequelize.INTEGER,
+     primaryKey: true,
+     autoIncrement: true
+   },
+   position: {
+     type: Sequelize.INTEGER
+   },
+   active: {
+     type: Sequelize.BOOLEAN
+   },
+   name: {
+     type: Sequelize.STRING
+   },
+   text: {
+     type: Sequelize.STRING
+   }
   });
-
   app.get("/tasks", function(req, res) {
     Task.findAll({order: '"position" DESC' }).then(data => {
       res.send(JSON.stringify(data));
@@ -62,4 +61,5 @@ module.exports = function(seq, app) {
       Task.findAll().then(data => makePromise(data.length + 1));
     };
   });
+  return Task;
 }
