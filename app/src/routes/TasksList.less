@@ -24,6 +24,13 @@
   }
 }
 
+.move-task-icon {
+  align-self: flex-end;
+  width:20px;
+  height: 20px;
+  cursor: pointer;
+}
+
 .tasks-container {
   text-align: center;
   max-height: ~"calc(100vh - 80px)";
@@ -37,7 +44,14 @@
   display: inline-block;
   width: auto;
   margin: 0 auto;
+  div:first-child {
+    align-self: flex-end;
+  }
   .task {
+    &.dragged {
+      position: absolute;
+      opacity: 0.3;
+    }
     display: flex;
     flex-direction: column;
     align-items: flex-start;
