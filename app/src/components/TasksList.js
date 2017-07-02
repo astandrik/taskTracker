@@ -27,7 +27,7 @@ class TasksList extends React.Component {
   resolvePositions(tasks) {
     let refs = {};
     tasks.forEach(x => refs[x.key] = this.refs["elem-"+x.key].refs["task-element"+x.key]);
-    let sorted = tasks.sort((a,b) => refs[a.key].offsetTop - refs[b.key].offsetTop);
+    let sorted = tasks.sort((a,b) => (refs[a.key].offsetTop+refs[a.key].offsetHeight) - refs[b.key].offsetTop);
     sorted = sorted.map((x,i) => ({id: x.key, position: (i+1)}));
     this.props.changePositions(sorted);
   }
