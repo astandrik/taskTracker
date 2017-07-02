@@ -1,6 +1,9 @@
 export default function deepAssign(object1, object2) {
   let newObj = {};
-  if(typeof(object2) !== 'object' || (object2 instanceof Array)) {
+  if((object2 instanceof Array)) {
+    return object2.slice();
+  }
+  if(typeof(object2) !== 'object') {
     return object2;
   }
   for(let e in object1) {

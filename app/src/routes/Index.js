@@ -6,7 +6,6 @@ import {
 } from 'react-router-dom'
 import React from "react";
 import {connect} from "react-redux";
-import { getMatches, getTasks} from "../../redux/actions/actions";
 import store from "../../store";
 import {tryLogin} from "../../redux/actions/actions";
 import Modal from "../components/Modals/LoginModal.js";
@@ -68,8 +67,7 @@ let IRouter = class IndexRouter extends React.Component {
       <GlobalContainer header={this.props.header}/>
         <Switch>
           <Route exact path='/' component={Home}/>
-          <Route path='/postslist' render={() => {store.dispatch(getProposed()); return <Posts/>}}/>
-          <Route path='/tasks' render={() => {store.dispatch(getTasks()); return <TaskTracker/>}}/>
+          <Route path='/tasks' component={TaskTracker}/>
         </Switch>
       </div>
     </Router>

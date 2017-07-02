@@ -36,19 +36,6 @@ function testConnection(sequelize) {
 }
 
 
-var Post = seq.define('post', {
-  id: {
-    type: Sequelize.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
-  },
-  name: {
-    type: Sequelize.STRING
-  },
-  text: {
-    type: Sequelize.STRING
-  }
-});
 
 var User = seq.define("user", {
   id: {
@@ -77,12 +64,6 @@ var Token = seq.define("token", {
   }
 });
 
-var insertPost = function(name, text) {
-  return Post.create({
-   name: name,
-   text: text
-  });
-}
 
 var insertToken = function(token) {
   return Token.create( {

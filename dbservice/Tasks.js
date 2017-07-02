@@ -54,7 +54,8 @@ module.exports = function(seq, app) {
         Task.create({
           name: task.name,
           text: task.text,
-          active: true
+          active: true,
+          position: max
         }).then((data) => {
           res.send(JSON.stringify(data.id));
         });
