@@ -8,6 +8,8 @@ import { getMatches, getProposed } from "./redux/actions/actions";
 import Index from "./src/routes/Index";
 import store from "./store";
 import { AppContainer } from 'react-hot-loader'
+import Perf from 'react-addons-perf';
+window.Perf = Perf;
 
 store.dispatch(initApp({header: "Yet another task tracker"}));
 

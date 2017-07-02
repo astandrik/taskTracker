@@ -1,17 +1,33 @@
-import {SET_TASKS,SET_HEADER, SET_TOKEN, CHANGE_POSITIONS} from "../actions/actions";
+import {SET_TASKS,SET_HEADER, SET_TOKEN, CHANGE_POSITIONS, TOGGLE_DRAGGED,SET_COORDS} from "../actions/actions";
 import helpers from "../../helperFunctions/helpers";
 let reducer = {};
 
+function normalize(tasks) {
+  let byId = {},
+      allIds = [];
+  tasks.forEach(x => {
+    byId[x.id] = x;
+    allIds.push(x.id);
+  });
+  return {
+    byId,
+    allIds
+  }
+}
 
-reducer.tasks = function(state = [], action) {
+reducer.tasks = function(state = {byId: {}, allIds: []}, action) {
   switch (action.type) {
     case SET_TASKS:
-      return action.data
-    case CHANGE_POSITIONS:
-      let positions = action.positions;
-      let tasks = JSON.parse(JSON.stringify(state));
-      tasks.forEach(x => x.position = positions[x.id]);
-      return tasks.sort((a,b) => a.position - b.position);
+      return normalize(action.data);
+    case TOGGLE_DRAGGED:
+      var tasks = JSON.parse(JSON.stringify(state));
+      tasks.byId[action.id].beindDragged = action.flag
+      return tasks;
+    case SET_COORDS:
+      var tasks = JSON.parse(JSON.stringify(state));
+      tasks.byId[action.id].posX = action.posX;
+      tasks.byId[action.id].posY = action.posY;
+      return tasks;
     default:
       return state;
   }
