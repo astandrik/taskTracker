@@ -7,11 +7,14 @@ import {getTasks, changePositions} from "../../redux/actions/actions";
 import TaskElem from "./TaskElem";
 import helpers from "../../helperFunctions/helpers";
 
-function getOffset(parent, a) {
+function getOffset(parent, a, top) {
   if(!a || !parent) return null;
-  if(a.classList.contains("dragged")) {
-    return  parent.scrollTop + a.offsetTop;
-  } else {
+  if(!top && a.classList.contains("dragged")) {
+    return  a.offsetTop - parent.offsetTop;
+  } else if(top && a.classList.contains("dragged")) {
+    return a.offsetTop - parent.offsetTop + a.offsetHeight;
+  }
+  else {
     return a.offsetTop;
   }
 }
@@ -47,6 +50,7 @@ class TasksList extends React.Component {
     this.resolvePositions = helpers.debounce(this.resolvePositions.bind(this), 100);
   }
   move(e) {
+    e.preventDefault();
     this.setState({
       posX: e.pageX,
       posY: e.pageY
@@ -63,7 +67,7 @@ class TasksList extends React.Component {
     let props = this.props;
     let tasks = props.tasks;
     let tasksList = tasks.map(x => <TaskElem posX={this.state.posX} posY={this.state.posY} ref={"elem-"+x.id}
-      key={x.id} objid={x.id} name={x.name} text={x.text} getOffset={getOffset.bind(this, this.refs["tasks"])}
+      key={x.id} objid={x.id} name={x.name} text={x.text} parent={this.refs["tasks"]} getOffset={getOffset.bind(this, this.refs["tasks"])}
       update={props.updateTask} delete={props.deleteTask}/>);
     return (
       <div className="tasks-container" onMouseMove={(e) => {this.move(e); this.resolvePositions(tasksList);}}>

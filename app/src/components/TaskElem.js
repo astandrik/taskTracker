@@ -20,15 +20,24 @@ class TaskElem extends React.Component {
   onChange(event) {
     this.setState({[event.target.name]: event.target.value});
   }
-  makeStatic() {
+  makeStatic(e) {
+    e.preventDefault();
     this.setState({beindDragged: false});
   }
-  makeDragged() {
+  makeDragged(e) {
+    e.preventDefault();
     this.setState({beindDragged: true});
   }
   render() {
     let props = this.props;
     let getOffset = props.getOffset;
+    let curOffset = getOffset(this.refs["task-element"+props.objid]);
+    let curOffsetTop = getOffset(this.refs["task-element"+props.objid], 1);
+    if(curOffset < 0) {
+      props.parent.scrollTop += curOffset * 5;
+    } else if(curOffsetTop > props.parent.offsetHeight && this.state.beindDragged) {
+      props.parent.scrollTop += (curOffsetTop - props.parent.offsetHeight)  * 5;
+    }
     let style = this.state.beindDragged ?
                 {left: this.props.posX - this.refs["task-element"+props.objid].offsetWidth + 12, top: this.props.posY - 30}
                 : {};
@@ -62,7 +71,7 @@ class TaskElem extends React.Component {
           <input onChange={this.onChange} value={this.state.name} name="name"/>
           <textarea onChange={this.onChange} value={this.state.text} name="text"/>
           <button onClick={props.update.bind(this, this.state)}> Обновить </button>
-          <button onClick={props.delete.bind(this, this.state)}> Удалить </button>          
+          <button onClick={props.delete.bind(this, this.state)}> Удалить </button>
         </div>
         {shadowClone}
       </div>
