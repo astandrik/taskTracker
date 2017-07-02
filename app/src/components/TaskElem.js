@@ -28,6 +28,7 @@ class TaskElem extends React.Component {
   }
   render() {
     let props = this.props;
+    let getOffset = props.getOffset;
     let style = this.state.beindDragged ?
                 {left: this.props.posX - this.refs["task-element"+props.objid].offsetWidth + 12, top: this.props.posY - 30}
                 : {};
@@ -61,7 +62,7 @@ class TaskElem extends React.Component {
           <input onChange={this.onChange} value={this.state.name} name="name"/>
           <textarea onChange={this.onChange} value={this.state.text} name="text"/>
           <button onClick={props.update.bind(this, this.state)}> Обновить </button>
-          <button onClick={props.delete.bind(this, this.state)}> Удалить </button>
+          <button onClick={props.delete.bind(this, this.state)}> Удалить </button>          
         </div>
         {shadowClone}
       </div>
