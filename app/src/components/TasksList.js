@@ -3,49 +3,16 @@ import {updateTask, deleteTask} from "../../redux/actions/actions";
 import {connect} from "react-redux";
 import PropTypes from 'prop-types';
 import ReactSVG from 'react-svg'
-import {getTasks, changePositions, toggleDragged, setCoords} from "../../redux/actions/actions";
+import {getTasks, resolvePositions, toggleDragged, setCoords} from "../../redux/actions/actions";
 import TaskElem from "./TaskElem";
 import helpers from "../../helperFunctions/helpers";
 import _ from "lodash";
 
-function getOffset(parent, a, top) {
-  if(!a || !parent) return null;
-  if(!top && a.classList.contains("dragged")) {
-    return  a.offsetTop - parent.offsetTop;
-  } else if(top && a.classList.contains("dragged")) {
-    return a.offsetTop - parent.offsetTop + a.offsetHeight;
-  }
-  else {
-    return a.offsetTop;
-  }
-}
-
-function compare(a, b, parent) {
-  if(a.classList.contains("dragged")) {
-    var aOffset = parent.scrollTop + a.offsetTop + a.offsetHeight,
-        bOffset = b.offsetTop;
-        if(aOffset > bOffset) return 1;
-        else return -1;
-  } else if(b.classList.contains("dragged")) {
-    var aOffset = a.offsetTop + a.offsetHeight,
-        bOffset = parent.scrollTop + b.offsetTop;
-        if(aOffset > bOffset) return 1;
-        else return -1;
-  } else {
-    var aOffset = a.offsetTop + a.offsetHeight,
-        bOffset = b.offsetTop;
-        if(aOffset > bOffset) return 1;
-        else return -1;
-  }
-}
 
 function getThresholds(refs) {
-  return refs.map(x => ({top: x.offsetTop, bottom: x.offsetTop + x.offsetHeight}))
+  return refs.map(x => ({top: x.ref.offsetTop, bottom: x.ref.offsetTop + x.ref.offsetHeight, id: x.id}))
 }
 
-var isArrayEqual = function(x, y) {
-  return _(x).differenceWith(y, _.isEqual).isEmpty();
-}
 
 function processScroll(parent, diff) {
   parent.scrollTop += diff;
@@ -62,22 +29,36 @@ class TasksList extends React.Component {
       draggedId: -1
     };
     this.move=this.move.bind(this);
+    this.resolvePositions = helpers.debounce(this.resolvePositions.bind(this),100);
   }
   resolvePositions(tasks) {
-    let refs = {};
-    this.props.tasks.forEach(x => refs[x.key] = this.refs["elem-"+x.key].refs["task-element"+x.key]);
-    let sorted = tasks.sort((a,b) => compare(refs[a.key],refs[b.key], this.refs["tasks"]));
-    sorted = sorted.map((x,i) => ({id: x.key, position: (i+1)}));
-    this.props.changePositions(sorted);
+    let refs = [];
+    let draggedId = this.state.draggedId;
+    this.props.tasks.allIds.filter(x => x !== this.state.draggedId)
+        .forEach(x => refs.push({id: x, ref: this.refs["elem-"+x].wrappedInstance.refs["task-element"+x]}));
+    let thresholds = getThresholds(refs).sort((a,b) => a.top - b.top);
+    let i = 0;
+    while(thresholds[i] && (this.state.posY + this.refs["tasks"].scrollTop) > thresholds[i].top) {
+      i++;
+    }
+    let positionedIds = [];
+    for(let j = 0; j < i; j++) {
+      positionedIds.push(thresholds[j].id);
+    }
+    positionedIds.push(draggedId);
+    for(let j = i; j < thresholds.length; j++) {
+      positionedIds.push(thresholds[j].id);
+    }
+    this.props.resolvePositions({positionedIds: positionedIds});
   }
   makeStatic(id,e) {
     e.preventDefault();
-    this.props.toggleDragged({id: id, flag: false});
+    this.props.toggleDragged({id: id, flag: false, posX: e.pageX, posY: e.pageY});
     this.setState({dragged: false, draggedId: id});
   }
   makeDragged(id,e) {
     e.preventDefault();
-    this.props.toggleDragged({id: id, flag: true});
+    this.props.toggleDragged({id: id, flag: true, posX: e.pageX, posY: e.pageY});
     this.setState({dragged: true, draggedId: id});
   }
   move(e) {
@@ -87,7 +68,16 @@ class TasksList extends React.Component {
       posX: e.pageX,
       posY: e.pageY,
       id: this.state.draggedId
-    })
+    });
+    this.setState({
+      posX: e.pageX,
+      posY: e.pageY
+    });
+    this.resolvePositions(this.props.tasks);
+  }
+  shouldComponentUpdate(nextProps) {
+    if(_.isEqual(this.props.tasks.allIds, nextProps.tasks.allIds)) return false;
+    return true;
   }
   render() {
     let props = this.props;
@@ -100,6 +90,7 @@ class TasksList extends React.Component {
         makeDragged={this.makeDragged.bind(this,id)}
         makeStatic={this.makeStatic.bind(this,id)}
         processScroll={processScroll.bind(this, this.refs["tasks"])}
+        parent={this.refs["tasks"]}
         update={props.updateTask}
         delete={props.deleteTask}/>
     });
@@ -130,10 +121,8 @@ let mapDispatchToProps = (dispatch) => {
     initLoad() {
       dispatch(getTasks());
     },
-    changePositions(tasks) {
-      let dict = {};
-      tasks.forEach(x => (dict[x.id] = x.position));
-      dispatch(changePositions({positions: dict}));
+    resolvePositions(tasks) {
+      dispatch(resolvePositions(tasks));
     },
     toggleDragged(obj) {
       dispatch(toggleDragged(obj));

@@ -1,10 +1,12 @@
 import * as ac from "./actionCreator";
 export const SET_TASKS = "SET_TASKS";
-export const CHANGE_POSITIONS = "CHANGE_POSITIONS";
+export const RESOLVE_POSITIONS = "RESOLVE_POSITIONS";
 export const TOGGLE_DRAGGED = "TOGGLE_DRAGGED";
 export const SET_COORDS = "SET_COORDS";
+export const SET_THRESHOLDS = "SET_THRESHOLDS";
 export const setTasks = ac.Action(SET_TASKS);
-export const changePositions = ac.Action(CHANGE_POSITIONS);
+export const setThresholds = ac.Action(SET_THRESHOLDS);
+export const resolvePositions = ac.Action(RESOLVE_POSITIONS);
 export const toggleDragged = ac.Action(TOGGLE_DRAGGED);
 export const setCoords = ac.Action(SET_COORDS);
 

@@ -2,10 +2,10 @@ import * as ac from "./actionCreator";
 export const SET_HEADER = "SET_HEADER";
 export const SET_TOKEN = "SET_TOKEN";
 
-import {getTasks, setTasks, updateTask, addTask, deleteTask, changePositions, toggleDragged,setCoords,
-  SET_TASKS, CHANGE_POSITIONS, TOGGLE_DRAGGED, SET_COORDS} from "./taskActions";
-export {getTasks, setTasks, updateTask, addTask, deleteTask, changePositions, toggleDragged,setCoords,
-  SET_TASKS, CHANGE_POSITIONS, TOGGLE_DRAGGED, SET_COORDS};
+import {getTasks, setTasks, updateTask, addTask, deleteTask, resolvePositions, toggleDragged,setCoords, setThresholds,
+  SET_TASKS, RESOLVE_POSITIONS, TOGGLE_DRAGGED, SET_COORDS, SET_THRESHOLDS} from "./taskActions";
+export {getTasks, setTasks, updateTask, addTask, deleteTask, resolvePositions, toggleDragged,setCoords, setThresholds,
+  SET_TASKS, RESOLVE_POSITIONS, TOGGLE_DRAGGED, SET_COORDS, SET_THRESHOLDS};
 import helpers from "../../helperFunctions/helpers";
 
 let setCookie = helpers.setCookie;

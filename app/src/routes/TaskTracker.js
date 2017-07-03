@@ -21,7 +21,7 @@ class TaskTracker extends  React.Component {
   }
   render() {
     const props = this.props;
-    let list = [];
+    let list = [];    
     return (
       <div className="flexV full-height">
           <div className="tasks-area">

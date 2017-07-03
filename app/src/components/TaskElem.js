@@ -3,14 +3,22 @@ import PropTypes from 'prop-types';
 import ReactSVG from 'react-svg';
 import {connect} from "react-redux";
 
-function getScrollDiff(getOffset, elem, parent) {
-  let curOffset = getOffset(elem);
-  let curOffsetTop = getOffset(elem, 1);
+function getOffset(elem, parent, isAbsolute) {
+  if(!isAbsolute) {
+    return elem.offsetTop - parent.offsetTop;
+  } else {
+    return elem.offsetTop - parent.offsetTop + elem.offsetHeight;
+  }
+}
+
+function getScrollDiff(elem, parent) {
+  let curOffset = getOffset(elem, parent);
+  let curOffsetTop = getOffset(elem, parent, true);
   let diff = 0;
   if(curOffset < 0) {
-    diff = curOffset * 5;
+    diff = curOffset * 2;
   } else if(curOffsetTop > parent.offsetHeight) {
-    diff = (curOffsetTop - parent.offsetHeight)  * 5;
+    diff = (curOffsetTop - parent.offsetHeight)  * 2;
   }
   return diff;
 }
@@ -29,13 +37,29 @@ class TaskElem extends React.Component {
   }
   render() {
     let props = this.props;
-    if(this.state.beindDragged) {
-      props.processScroll(getScrollDiff(getOffset, this.refs["task-element"+props.objid], props.parent));
+    if(props.obj.beindDragged) {
+      props.processScroll(getScrollDiff(this.refs["task-element"+props.objid], props.parent));
     }
-    let style = props.obj.beindDragged ? {left: props.obj.posX - this.refs["task-element"+props.obj.id].offsetWidth + 20,
-                                          top: props.obj.posY - this.refs["task-element"+props.obj.id].offsetHeight/2 + 20}
-                                       :
-                                       {};
+    let style = {},
+        shadowClone = null;
+    if( props.obj.beindDragged) {
+      style = {left: (props.obj.posX - this.refs["task-element"+props.obj.id].offsetWidth + 20)|| 0,
+                                            top: (props.obj.posY - this.refs["task-element"+props.obj.id].offsetHeight/2 + 20) || 0};
+      shadowClone = (
+        <div className="task shadow">
+          <div>
+            <ReactSVG
+              path="app/src/Icons/move-arrows.svg"
+              className="move-task-icon"
+            />
+          </div>
+          <input readOnly value={this.state.name === undefined ? this.props.obj.name : this.state.name} name="name"/>
+          <textarea readOnly value={this.state.text === undefined ? this.props.obj.text : this.state.text} name="text"/>
+          <button> Обновить </button>
+          <button> Удалить </button>
+        </div>
+      )
+    }
     return (
       <div onMouseUp={this.props.makeStatic}>
         <div ref={"task-element"+ props.obj.id} className={"task" + (props.obj.beindDragged ? " dragged " : "")} style={style}>
@@ -50,6 +74,7 @@ class TaskElem extends React.Component {
           <button onClick={props.update.bind(this, Object.assign({},this.state, {id: props.obj.id}))}> Обновить </button>
           <button onClick={props.delete.bind(this, props.obj.id)}> Удалить </button>
         </div>
+        {shadowClone}
       </div>
     );
   }
@@ -58,10 +83,10 @@ class TaskElem extends React.Component {
 let makeMapStateToProps = function(initialState, initialOwnProps) {
   const mapStateToProps = function(state) {
     return {
-      obj: state.Tasks.tasks.byId[initialOwnProps.objid] || {name: '', text: '', beindDragged: false}
+      obj: state.Tasks.tasks.byId[initialOwnProps.objid] || {name: '', text: '', beindDragged: false, posY: -1, posX: -1}
     };
   };
   return mapStateToProps;
 }
 
-export default connect(makeMapStateToProps)(TaskElem);
+export default connect(makeMapStateToProps, null, null, { withRef: true })(TaskElem);
