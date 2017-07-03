@@ -1,8 +1,9 @@
 import {
-  BrowserRouter as Router,
+  Router,
   Route,
   Link,
-  Switch
+  Switch,
+  Redirect
 } from 'react-router-dom'
 import React from "react";
 import {connect} from "react-redux";
@@ -39,19 +40,28 @@ class Global extends React.Component {
   }
 }
 
+function checkTokenRender(token, component) {
+  return () => token ? component : <Redirect to="/login"/>;
+}
+
+function globalWrapper(component) {
+  return (
+      <div>
+        <Global header={this.props.header} logout={this.props.logout}/>
+        {component}
+      </div>
+  )
+}
+
 let IRouter = class IndexRouter extends React.Component {
   render() {
     let props = this.props;
-    if(!props.token) {
-      history.push("/login");
-    }
     return (
     <Router history={history}>
       <div>
-      <Global header={this.props.header} logout={this.props.logout}/>
         <Switch>
-          <Route exact path='/' component={Home}/>
-          <Route path='/tasks' component={TaskTracker}/>
+          <Route exact path='/' render={checkTokenRender(props.token, globalWrapper.bind(this)(<Home/>))}/>
+          <Route path='/tasks'  render={checkTokenRender(props.token, globalWrapper.bind(this)(<TaskTracker/>))}/>
           <Route path="/login" component={Login}/>
         </Switch>
       </div>

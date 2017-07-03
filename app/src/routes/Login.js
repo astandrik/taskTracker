@@ -1,13 +1,15 @@
 import React from "react";
 import {tryLogin} from "../../redux/actions/actions";
 import {connect} from "react-redux";
+import history from "./history";
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       name: "Admin",
-      password: ""
+      password: "",
+      error: false
     }
   }
   handleChange(event) {
@@ -16,13 +18,18 @@ class Login extends React.Component {
   }
   handleSubmit(event) {
     event.preventDefault();
-    this.props.tryLogin(this.state);    
+    this.props.tryLogin(this.state).then((data) => {
+      if(data) {
+        history.push("/");
+      }
+    }, () => { this.setState({error: true}) });
   }
   render() {
     let props = this.props;
     return (
         <div className="login-window">
           <h1> Авторизуйтесь </h1>
+          {this.state.error ? <h2> Неверные логин или пароль </h2> : null}
           <form onSubmit={this.handleSubmit.bind(this)}>
             <label>
               Имя
@@ -42,7 +49,7 @@ class Login extends React.Component {
 const mapDispatchToProps = (dispatch) => {
   return {
     tryLogin(data) {
-      dispatch(tryLogin(data));
+      return new Promise((resolve, reject) => dispatch(tryLogin(data, resolve, reject)));
     }
   }
 }

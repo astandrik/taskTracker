@@ -4,7 +4,8 @@ import TaskModal from "../components/Modals/TaskModal";
 import "./TaskTracker.less";
 import {addTask} from "../../redux/actions/actions";
 import {connect} from "react-redux";
-import ReactSVG from 'react-svg'
+import ReactSVG from 'react-svg';
+import history from "./history";
 
 class TaskTracker extends  React.Component {
   constructor(props) {
