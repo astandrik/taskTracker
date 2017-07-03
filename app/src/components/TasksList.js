@@ -14,7 +14,8 @@ function getThresholds(refs) {
 }
 
 
-function processScroll(parent, diff) {
+function processScroll(parentFunc, diff) {
+  let parent = parentFunc();
   parent.scrollTop += diff;
 }
 
