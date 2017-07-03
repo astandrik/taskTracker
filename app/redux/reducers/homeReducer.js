@@ -55,7 +55,7 @@ function getCookie(name) {
   return matches ? decodeURIComponent(matches[1]) : undefined;
 }
 
-reducer.token = function(state = '', action) {
+reducer.token = function(state = 'Invalid', action) {
   switch (action.type) {
     case SET_TOKEN:
       return action.data

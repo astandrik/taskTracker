@@ -11,7 +11,8 @@ function getOffset(elem, parent, isAbsolute) {
   }
 }
 
-function getScrollDiff(elem, parent) {
+function getScrollDiff(elem, parentFunc) {
+  let parent = parentFunc();
   let curOffset = getOffset(elem, parent);
   let curOffsetTop = getOffset(elem, parent, true);
   let diff = 0;
@@ -80,13 +81,10 @@ class TaskElem extends React.Component {
   }
 }
 
-let makeMapStateToProps = function(initialState, initialOwnProps) {
-  const mapStateToProps = function(state) {
+  const mapStateToProps = function(state, ownProps) {
     return {
-      obj: state.Tasks.tasks.byId[initialOwnProps.objid] || {name: '', text: '', beindDragged: false, posY: -1, posX: -1}
+      obj: state.Tasks.tasks.byId[ownProps.objid] || {name: '', text: '', beindDragged: false, posY: -1, posX: -1}
     };
   };
-  return mapStateToProps;
-}
 
-export default connect(makeMapStateToProps, null, null, { withRef: true })(TaskElem);
+export default connect(mapStateToProps, null, null, { withRef: true })(TaskElem);

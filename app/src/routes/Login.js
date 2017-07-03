@@ -1,4 +1,5 @@
 import React from "react";
+import "./Login.less";
 import {tryLogin} from "../../redux/actions/actions";
 import {connect} from "react-redux";
 import history from "./history";
@@ -20,7 +21,17 @@ class Login extends React.Component {
     event.preventDefault();
     this.props.tryLogin(this.state).then((data) => {
       if(data) {
-        history.push("/");
+        let search = history.location.search;
+        if(search) {
+          let location = search.match(/\?location=(.+)/)[1];
+          if(location) {
+            history.push(location);
+          } else {
+            history.push("/");
+          }
+        } else {
+          history.push("/");
+        }
       }
     }, () => { this.setState({error: true}) });
   }
@@ -37,9 +48,9 @@ class Login extends React.Component {
             </label>
             <label>
               Пароль:
-              <input name="password" value={this.state.password} onChange={this.handleChange.bind(this)}/>
+              <input name="password" type="password" value={this.state.password} onChange={this.handleChange.bind(this)}/>
             </label>
-            <input type="submit" value="Submit" />
+            <input type="submit" value="Войти" />
           </form>
         </div>
     )

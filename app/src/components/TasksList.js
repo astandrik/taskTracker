@@ -100,8 +100,8 @@ class TasksList extends React.Component {
         objid={id}
         makeDragged={this.makeDragged.bind(this,id)}
         makeStatic={this.makeStatic.bind(this,id)}
-        processScroll={processScroll.bind(this, this.refs["tasks"])}
-        parent={this.refs["tasks"]}
+        processScroll={processScroll.bind(this, () => this.refs["tasks"])}
+        parent={() => this.refs["tasks"]}
         update={props.updateTask}
         delete={props.deleteTask}/>
     });

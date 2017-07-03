@@ -40,8 +40,8 @@ class Global extends React.Component {
   }
 }
 
-function checkTokenRender(token, component) {
-  return () => token ? component : <Redirect to="/login"/>;
+function checkTokenRender(token, component, prevLocation) {
+  return () => token && !~token.indexOf("Invalid") ? component : <Redirect to={"/login?location="+prevLocation}/>;
 }
 
 function globalWrapper(component) {
@@ -56,12 +56,13 @@ function globalWrapper(component) {
 let IRouter = class IndexRouter extends React.Component {
   render() {
     let props = this.props;
+    let location = history.location.pathname;
     return (
     <Router history={history}>
       <div>
         <Switch>
-          <Route exact path='/' render={checkTokenRender(props.token, globalWrapper.bind(this)(<Home/>))}/>
-          <Route path='/tasks'  render={checkTokenRender(props.token, globalWrapper.bind(this)(<TaskTracker/>))}/>
+          <Route exact path='/' render={checkTokenRender(props.token, globalWrapper.bind(this)(<Home/>), location)}/>
+          <Route path='/tasks'  render={checkTokenRender(props.token, globalWrapper.bind(this)(<TaskTracker/>), location)}/>
           <Route path="/login" component={Login}/>
         </Switch>
       </div>
