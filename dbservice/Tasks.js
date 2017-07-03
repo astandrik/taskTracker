@@ -42,11 +42,14 @@ module.exports = function(seq, app) {
     let task = req.body.task;
     let promise;
     if(task.id) {
-      Task.update({
-          name: task.name,
-          text: task.text,
-          active: task.active
-        },{where: {id: task.id}}).then((data) => {
+      let updatedObject =
+              {
+                name: task.name || undefined,
+                text: task.text || undefined,
+                active: task.active || undefined,
+                position: task.position || undefined
+              };
+      Task.update(updatedObject, {where: {id: task.id}}).then((data) => {
         res.send(JSON.stringify(data.id));
       });
     } else {

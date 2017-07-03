@@ -5,9 +5,9 @@ let reducer = {};
 function normalize(tasks) {
   let byId = {},
       allIds = [];
-  tasks.forEach(x => {
+  tasks.forEach((x,i) => {
     byId[x.id] = x;
-    allIds.push(x.id);
+    allIds[i] = x.id;
   });
   return {
     byId,

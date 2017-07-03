@@ -67,6 +67,9 @@ class TasksList extends React.Component {
     e.preventDefault();
     this.props.toggleDragged({id: id, flag: false, posX: e.pageX, posY: e.pageY});
     this.setState({dragged: false, draggedId: id});
+    this.props.tasks.allIds.forEach((x,i) => {
+      this.props.updateTask({id: x, position: (i+1)});
+    });
   }
   makeDragged(id,e) {
     e.preventDefault();
@@ -120,8 +123,8 @@ let mapStateToProps = (state) => {
 
 let mapDispatchToProps = (dispatch) => {
   return {
-    updateTask(id) {
-      dispatch(updateTask(id));
+    updateTask(task) {
+      dispatch(updateTask(task));
     },
     deleteTask(id) {
       dispatch(deleteTask(id));
