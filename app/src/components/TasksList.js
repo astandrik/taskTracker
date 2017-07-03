@@ -38,18 +38,30 @@ class TasksList extends React.Component {
         .forEach(x => refs.push({id: x, ref: this.refs["elem-"+x].wrappedInstance.refs["task-element"+x]}));
     let thresholds = getThresholds(refs).sort((a,b) => a.top - b.top);
     let i = 0;
-    while(thresholds[i] && (this.state.posY + this.refs["tasks"].scrollTop) > thresholds[i].top) {
-      i++;
+    let shadowRef = this.refs["elem-"+draggedId].wrappedInstance.refs["shadow"];
+    if(shadowRef) {
+      let direction = tasks.byId[draggedId].posY - tasks.byId[draggedId].prevY > 0 ? "down" : "up";
+      if(direction === "down") {
+        while(thresholds[i] && (tasks.byId[draggedId].posY
+          - shadowRef.offsetHeight/2 + 20 + this.refs["tasks"].scrollTop + shadowRef.offsetHeight) > thresholds[i].top) {
+          i++;
+        }
+      } else {
+        while(thresholds[i] && (tasks.byId[draggedId].posY - shadowRef.offsetHeight/2 + 20
+          + this.refs["tasks"].scrollTop) > thresholds[i].bottom) {
+          i++;
+        }
+      }
+      let positionedIds = [];
+      for(let j = 0; j < i; j++) {
+        positionedIds.push(thresholds[j].id);
+      }
+      positionedIds.push(draggedId);
+      for(let j = i; j < thresholds.length; j++) {
+        positionedIds.push(thresholds[j].id);
+      }
+      this.props.resolvePositions({positionedIds: positionedIds});
     }
-    let positionedIds = [];
-    for(let j = 0; j < i; j++) {
-      positionedIds.push(thresholds[j].id);
-    }
-    positionedIds.push(draggedId);
-    for(let j = i; j < thresholds.length; j++) {
-      positionedIds.push(thresholds[j].id);
-    }
-    this.props.resolvePositions({positionedIds: positionedIds});
   }
   makeStatic(id,e) {
     e.preventDefault();
@@ -68,10 +80,6 @@ class TasksList extends React.Component {
       posX: e.pageX,
       posY: e.pageY,
       id: this.state.draggedId
-    });
-    this.setState({
-      posX: e.pageX,
-      posY: e.pageY
     });
     this.resolvePositions(this.props.tasks);
   }

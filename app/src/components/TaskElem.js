@@ -46,7 +46,7 @@ class TaskElem extends React.Component {
       style = {left: (props.obj.posX - this.refs["task-element"+props.obj.id].offsetWidth + 20)|| 0,
                                             top: (props.obj.posY - this.refs["task-element"+props.obj.id].offsetHeight/2 + 20) || 0};
       shadowClone = (
-        <div className="task shadow">
+        <div ref="shadow" className="task shadow">
           <div>
             <ReactSVG
               path="app/src/Icons/move-arrows.svg"
