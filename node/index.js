@@ -117,25 +117,6 @@ app.delete("/api/task", function(req, res) {
   });
 });
 
-app.get('/api/proposed', function(req, ress) {
-  console.log("request initiated");
-  var req = https.get('https://2ch.hk/b/', function(res) {
-    // Buffer the body entirely for processing as a whole.
-    var bodyChunks = [];
-    res.on('data', function(chunk) {
-      // You can process streamed parts here...
-      bodyChunks.push(chunk);
-    }).on('end', function() {
-      var body = Buffer.concat(bodyChunks);
-      var posts = bodyParse(body.toString());
-      ress.send(posts);
-      // ...and/or process the entire body here.
-    })
-  });
-  req.on('error', function(e) {
-    console.log('ERROR: ' + e.message);
-  });
-});
 
 app.get('/db/dbcreate', function(req,ress) {
   http.get("http://127.0.0.1:" + config.ports.dbservice + "/dbcreate", function(res) {

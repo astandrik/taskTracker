@@ -5,9 +5,7 @@ import {
   Switch
 } from 'react-router-dom'
 import React from "react";
-import Posts from "../containers/PostsContainer";
 import {connect} from "react-redux";
-import { getMatches, getProposed, getTasks} from "../../redux/actions/actions";
 import store from "../../store";
 import {tryLogin} from "../../redux/actions/actions";
 import Modal from "../components/Modals/LoginModal.js";
@@ -42,7 +40,6 @@ class Global extends React.Component {
         </div>
         <div className="links">
           <Link className="link-button" to="/">Домой</Link>
-          <Link  className="link-button" to="/postslist">Список Постов</Link>
           <Link  className="link-button" to="/tasks">Задачи</Link>
         </div>
         <Modal visible={this.state.ModalVisible} hideModal={this.hideModal} tryLogin={this.props.tryLogin}/>
@@ -70,8 +67,7 @@ let IRouter = class IndexRouter extends React.Component {
       <GlobalContainer header={this.props.header}/>
         <Switch>
           <Route exact path='/' component={Home}/>
-          <Route path='/postslist' render={() => {store.dispatch(getProposed()); return <Posts/>}}/>
-          <Route path='/tasks' render={() => {store.dispatch(getTasks()); return <TaskTracker/>}}/>
+          <Route path='/tasks' component={TaskTracker}/>
         </Switch>
       </div>
     </Router>
