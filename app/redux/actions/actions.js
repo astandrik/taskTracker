@@ -23,3 +23,10 @@ export const tryLogin = function(data) {
   }
   return ac.FetchPostAsync("/api/login", data, setT);
 }
+
+export const logout = function() {
+  return (dispatch, getState) => {
+    helpers.deleteCookie("token");
+    dispatch(setToken({data: null}));
+  }
+}

@@ -7,9 +7,10 @@ import {
 import React from "react";
 import {connect} from "react-redux";
 import store from "../../store";
-import {tryLogin} from "../../redux/actions/actions";
-import Modal from "../components/Modals/LoginModal.js";
 import TaskTracker from "./TaskTracker";
+import Login from "./Login";
+import history from './history';
+import {logout} from "../../redux/actions/actions";
 
 let Home = (props) => {
   return (
@@ -20,15 +21,6 @@ let Home = (props) => {
 class Global extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {ModalVisible: false};
-    this.showModal = this.showModal.bind(this);
-    this.hideModal = this.hideModal.bind(this);
-  }
-  showModal() {
-    this.setState({ModalVisible: true})
-  }
-  hideModal() {
-    this.setState({ModalVisible: false})
   }
   render() {
     let props = this.props;
@@ -36,38 +28,31 @@ class Global extends React.Component {
       <div className="header">
         <div className="sub-header">
             <h3 className="global-header">{props.header}</h3>
-            <button className="add_button" onClick={this.showModal}>Login</button>
+            <button onClick={this.props.logout}>Logout</button>
         </div>
         <div className="links">
           <Link className="link-button" to="/">Домой</Link>
           <Link  className="link-button" to="/tasks">Задачи</Link>
         </div>
-        <Modal visible={this.state.ModalVisible} hideModal={this.hideModal} tryLogin={this.props.tryLogin}/>
       </div>
     )
   }
 }
 
-let mapDispatchToProps=(dispatch)=> {
-  return {
-    tryLogin: (data)=> {
-      dispatch(tryLogin(data));
-    }
-  }
-}
-
-let GlobalContainer = connect(null, mapDispatchToProps)(Global);
-
 let IRouter = class IndexRouter extends React.Component {
   render() {
     let props = this.props;
+    if(!props.token) {
+      history.push("/login");
+    }
     return (
-    <Router>
+    <Router history={history}>
       <div>
-      <GlobalContainer header={this.props.header}/>
+      <Global header={this.props.header} logout={this.props.logout}/>
         <Switch>
           <Route exact path='/' component={Home}/>
           <Route path='/tasks' component={TaskTracker}/>
+          <Route path="/login" component={Login}/>
         </Switch>
       </div>
     </Router>
@@ -77,8 +62,17 @@ let IRouter = class IndexRouter extends React.Component {
 
 let mapStateToProps = (state, ownProps) => {
   return {
-    header: state.Home.header
+    header: state.Home.header,
+    token: state.Home.token
   }
 }
 
-export default connect(mapStateToProps)(IRouter);
+let mapDispatchToProps = (dispatch) => {
+  return {
+    logout() {
+      dispatch(logout())
+    }
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(IRouter);

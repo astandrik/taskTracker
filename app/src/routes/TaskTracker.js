@@ -1,7 +1,7 @@
 import React from "react";
 import TasksList from "../components/TasksList";
 import TaskModal from "../components/Modals/TaskModal";
-import "./TasksList.less";
+import "./TaskTracker.less";
 import {addTask} from "../../redux/actions/actions";
 import {connect} from "react-redux";
 import ReactSVG from 'react-svg'
@@ -21,7 +21,7 @@ class TaskTracker extends  React.Component {
   }
   render() {
     const props = this.props;
-    let list = [];    
+    let list = [];
     return (
       <div className="flexV full-height">
           <div className="tasks-area">
