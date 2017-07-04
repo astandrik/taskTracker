@@ -18,6 +18,10 @@ export const getTasks = function() {
   return ac.FetchAsync("/api/tasks", callback);
 }
 
+export const updateTaskPosition = function(data) {
+  return ac.FetchPostAsync("/api/task/position", data);
+}
+
 export const updateTask = function(data, needUpdate) {
   const callback = (dispatch, data) => {
     if(needUpdate) {

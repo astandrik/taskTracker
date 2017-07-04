@@ -72,6 +72,20 @@ app.post("/api/login", (req,ress) => {
   })
 });
 
+app.post("/api/task/position", (req,res) => {
+  var body = req.body;
+  var options = {
+    method: "POST",
+    port: config.ports.dbservice,
+    headers: {
+      "Content-Type": "application/json"
+    },
+    path: "/task/position"
+  };
+  httpHelper.makeRequest(options, {id: body.id, position: body.position}).then(data => {
+    res.send(JSON.stringify(data));
+  });
+});
 
 app.get("/api/tasks", function(req,res) {
   var options = {

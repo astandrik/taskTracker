@@ -20,7 +20,7 @@ export function FetchAsync(url, callback) {
     }
     return fetch(url,request)
     .then(r => r.json())
-    .then(json => callback(dispatch, json));
+    .then(json => {if(callback) callback(dispatch, json)});
   }
 }
 
@@ -43,7 +43,7 @@ export function FetchPostAsync(url, data, callback) {
     }
     return fetch(url,request)
     .then(r => r.json())
-    .then(json => callback(dispatch, json));
+    .then(json => {if(callback) callback(dispatch, json)});
   }
 }
 
@@ -66,6 +66,6 @@ export function FetchDeleteAsync(url, data, callback) {
     }
     return fetch(url,request)
     .then(r => r.json())
-    .then(json => callback(dispatch, json));
+    .then(json => {if(callback) callback(dispatch, json)});
   }
 }

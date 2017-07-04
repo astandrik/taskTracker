@@ -2,9 +2,9 @@ import * as ac from "./actionCreator";
 export const SET_HEADER = "SET_HEADER";
 export const SET_TOKEN = "SET_TOKEN";
 
-import {getTasks, setTasks, updateTask, addTask, deleteTask, resolvePositions, toggleDragged,setCoords, setThresholds,
+import {getTasks, setTasks, updateTask, addTask, deleteTask, resolvePositions, toggleDragged,setCoords, setThresholds, updateTaskPosition,
   SET_TASKS, RESOLVE_POSITIONS, TOGGLE_DRAGGED, SET_COORDS, SET_THRESHOLDS} from "./taskActions";
-export {getTasks, setTasks, updateTask, addTask, deleteTask, resolvePositions, toggleDragged,setCoords, setThresholds,
+export {getTasks, setTasks, updateTask, addTask, deleteTask, resolvePositions, toggleDragged,setCoords, setThresholds, updateTaskPosition,
   SET_TASKS, RESOLVE_POSITIONS, TOGGLE_DRAGGED, SET_COORDS, SET_THRESHOLDS};
 import helpers from "../../helperFunctions/helpers";
 

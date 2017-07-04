@@ -43,14 +43,14 @@ class Modal extends React.Component {
           <h1> Создание задачи </h1>
           <form className="create-task-form" onSubmit={this.handleSubmit.bind(this)}>
             <label>
-              Название:
+              <div>Название</div>
               <input name="name" value={this.state.name} onChange={this.handleChange.bind(this)}/>
             </label>
             <label>
-              Описание:
+              <div>Описание</div>
               <textarea name="text" value={this.state.message} onChange={this.handleChange.bind(this)}/>
             </label>
-            <input type="submit" value="Submit" />
+            <input type="submit" value="Создать" />
           </form>
         </div>
       </div>

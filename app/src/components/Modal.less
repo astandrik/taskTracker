@@ -26,16 +26,23 @@
 
 .create-task-form {
   display: flex;
-  min-height: 200px;
+  height: 80%;
   flex-direction: column;
   align-content: center;
+  width: 80%;
   justify-content: space-around;
   &>input {
     align-self: flex-end;
   }
-  input {
-    float: right;
+  input, textarea {
+    margin: 0 auto;
+    display: block;
+    width:90%;
   }
+  div {
+    text-align: center;
+  }
+
 }
 
 .close-icon {

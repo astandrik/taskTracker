@@ -3,7 +3,7 @@ import {updateTask, deleteTask} from "../../redux/actions/actions";
 import {connect} from "react-redux";
 import PropTypes from 'prop-types';
 import ReactSVG from 'react-svg'
-import {getTasks, resolvePositions, toggleDragged, setCoords} from "../../redux/actions/actions";
+import {getTasks, resolvePositions, toggleDragged, setCoords, updateTaskPosition} from "../../redux/actions/actions";
 import TaskElem from "./TaskElem";
 import helpers from "../../helperFunctions/helpers";
 import _ from "lodash";
@@ -27,7 +27,8 @@ class TasksList extends React.Component {
       posX: 0,
       posY: 0,
       dragged: false,
-      draggedId: -1
+      draggedId: -1,
+      draggedPosition: -1
     };
     this.move=this.move.bind(this);
     this.resolvePositions = helpers.debounce(this.resolvePositions.bind(this),100);
@@ -58,19 +59,19 @@ class TasksList extends React.Component {
         positionedIds.push(thresholds[j].id);
       }
       positionedIds.push(draggedId);
+      let draggedPosition = positionedIds.length;
       for(let j = i; j < thresholds.length; j++) {
         positionedIds.push(thresholds[j].id);
       }
-      this.props.resolvePositions({positionedIds: positionedIds});
+      this.setState({draggedPosition});
+      this.props.resolvePositions({positionedIds});
     }
   }
   makeStatic(id,e) {
     e.preventDefault();
     this.props.toggleDragged({id: id, flag: false, posX: e.pageX, posY: e.pageY});
     this.setState({dragged: false, draggedId: id});
-    this.props.tasks.allIds.forEach((x,i) => {
-      this.props.updateTask({id: x, position: (i+1)});
-    });
+    this.props.updateTaskPosition({id: this.state.draggedId, position: this.state.draggedPosition});
   }
   makeDragged(id,e) {
     e.preventDefault();
@@ -132,6 +133,9 @@ let mapDispatchToProps = (dispatch) => {
     },
     initLoad() {
       dispatch(getTasks());
+    },
+    updateTaskPosition(task) {
+      dispatch(updateTaskPosition(task));
     },
     resolvePositions(tasks) {
       dispatch(resolvePositions(tasks));
