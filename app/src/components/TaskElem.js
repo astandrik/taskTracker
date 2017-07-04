@@ -44,16 +44,9 @@ class TaskElem extends React.Component {
     let style = {},
         shadowClone = null;
     if( props.obj.beindDragged) {
-      style = {left: (props.obj.posX - this.refs["task-element"+props.obj.id].offsetWidth + 20)|| 0,
-                                            top: (props.obj.posY - this.refs["task-element"+props.obj.id].offsetHeight/2 + 20) || 0};
+      style = {left: (props.obj.borders.left || 0), top: (props.obj.borders.top || 0)};
       shadowClone = (
         <div ref="shadow" className="task shadow">
-          <div>
-            <ReactSVG
-              path="app/src/Icons/move-arrows.svg"
-              className="move-task-icon"
-            />
-          </div>
           <input readOnly value={this.state.name === undefined ? this.props.obj.name : this.state.name} name="name"/>
           <textarea readOnly value={this.state.text === undefined ? this.props.obj.text : this.state.text} name="text"/>
           <button> Обновить </button>
@@ -62,14 +55,8 @@ class TaskElem extends React.Component {
       )
     }
     return (
-      <div onMouseUp={this.props.makeStatic}>
-        <div ref={"task-element"+ props.obj.id} className={"task" + (props.obj.beindDragged ? " dragged " : "")} style={style}>
-          <div onMouseDown={this.props.makeDragged}>
-            <ReactSVG
-              path="app/src/Icons/move-arrows.svg"
-              className="move-task-icon"
-            />
-          </div>
+      <div name={"task-card-container-"+props.obj.id} onMouseUp={this.props.makeStatic} onMouseDown={this.props.makeDragged}>
+        <div name="task-card"  ref={"task-element"+ props.obj.id} className={"task" + (props.obj.beindDragged ? " dragged " : "")} style={style}>
           <input onChange={this.onChange} value={this.state.name === undefined ? this.props.obj.name : this.state.name} name="name"/>
           <textarea onChange={this.onChange} value={this.state.text === undefined ? this.props.obj.text : this.state.text} name="text"/>
           <button onClick={props.update.bind(this, Object.assign({},this.state, {id: props.obj.id}))}> Обновить </button>

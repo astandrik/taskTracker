@@ -33,10 +33,14 @@ reducer.tasks = function(state = {byId: {}, allIds: []}, action) {
     case SET_TASKS:
       return normalize(action.data);
     case TOGGLE_DRAGGED:
-      var newTaskState = {beindDragged: action.flag, posX: action.posX, posY: action.posY};
+      var newTaskState = {beindDragged: action.flag, posX: action.posX, posY: action.posY, borders: action.borders};
       return updatedTaskState(state, newTaskState , action.id);
     case SET_COORDS:
-      var newTaskState = {posX: action.posX, posY: action.posY, prevX: state.byId[action.id].posX, prevY: state.byId[action.id].posY};
+      let moveX = action.posX - state.byId[action.id].posX,
+          moveY = action.posY - state.byId[action.id].posY,
+          oldBorders = state.byId[action.id].borders,
+          newBorders = {top: oldBorders.top + moveY, bottom: oldBorders.bottom + moveY, left: oldBorders.left + moveX, right: oldBorders.right + moveX};
+      var newTaskState = {posX: action.posX, posY: action.posY, prevX: state.byId[action.id].posX, prevY: state.byId[action.id].posY, borders: newBorders};
       return updatedTaskState(state, newTaskState, action.id);
     case RESOLVE_POSITIONS:
       return {

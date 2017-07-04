@@ -13,6 +13,14 @@ function getThresholds(refs) {
   return refs.map(x => ({top: x.ref.offsetTop, bottom: x.ref.offsetTop + x.ref.offsetHeight, id: x.id}))
 }
 
+function getBorders(elem, parent) {
+  return {
+    top: elem.offsetTop - parent.scrollTop,
+    bottom: elem.offsetTop - parent.scrollTop + elem.offsetHeight,
+    left: elem.offsetLeft,
+    right: elem.offsetLeft + elem.offsetWidth
+  }
+}
 
 function processScroll(parentFunc, diff) {
   let parent = parentFunc();
@@ -28,7 +36,8 @@ class TasksList extends React.Component {
       posY: 0,
       dragged: false,
       draggedId: -1,
-      draggedPosition: -1
+      draggedPosition: -1,
+      currentBorders: {}
     };
     this.move=this.move.bind(this);
     this.resolvePositions = helpers.debounce(this.resolvePositions.bind(this),100);
@@ -44,13 +53,11 @@ class TasksList extends React.Component {
     if(shadowRef) {
       let direction = tasks.byId[draggedId].posY - tasks.byId[draggedId].prevY > 0 ? "down" : "up";
       if(direction === "down") {
-        while(thresholds[i] && (tasks.byId[draggedId].posY
-          - shadowRef.offsetHeight/2 + 20 + this.refs["tasks"].scrollTop + shadowRef.offsetHeight) > thresholds[i].top) {
+        while(thresholds[i] && (tasks.byId[draggedId].borders.bottom+this.refs["tasks"].scrollTop  > thresholds[i].top)) {          
           i++;
         }
       } else {
-        while(thresholds[i] && (tasks.byId[draggedId].posY - shadowRef.offsetHeight/2 + 20
-          + this.refs["tasks"].scrollTop) > thresholds[i].bottom) {
+        while(thresholds[i] && (tasks.byId[draggedId].borders.top + this.refs["tasks"].scrollTop  > thresholds[i].bottom)) {
           i++;
         }
       }
@@ -74,9 +81,13 @@ class TasksList extends React.Component {
     this.props.updateTaskPosition({id: this.state.draggedId, position: this.state.draggedPosition});
   }
   makeDragged(id,e) {
-    e.preventDefault();
-    this.props.toggleDragged({id: id, flag: true, posX: e.pageX, posY: e.pageY});
-    this.setState({dragged: true, draggedId: id});
+    let name = e.target.getAttribute("name");
+    if(name && ~name.indexOf("task-card")) {
+      let elem =  this.refs["elem-"+id].wrappedInstance.refs["task-element"+id];
+      let currentBorders = getBorders(elem, this.refs["tasks"]);
+      this.props.toggleDragged({id: id, flag: true, posX: e.pageX, posY: e.pageY, borders: currentBorders});
+      this.setState({dragged: true, draggedId: id});
+    }
   }
   move(e) {
     if(!this.state.dragged) return;
