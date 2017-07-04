@@ -17,13 +17,41 @@
   bottom: 0;
   left: 0;
   right: 0;
-  width: 200px;
-  height: 250px;
-  padding:50px;
+  width: 300px;
+  height: 350px;
+  padding:10px;
   margin: auto;
   background: white;
 }
 
+.create-task-form {
+  display: flex;
+  min-height: 200px;
+  flex-direction: column;
+  align-content: center;
+  justify-content: space-around;
+  &>input {
+    align-self: flex-end;
+  }
+  input {
+    float: right;
+  }
+}
+
+.close-icon {
+  align-self: flex-end;
+  width:20px;
+  height: 20px;
+  cursor: pointer;
+}
+
+.close-icon-container{
+  position: absolute;
+  right: 10px;
+  top:10px;
+}
+
+
 .login-form {
-  height: 100px; 
+  height: 100px;
 }
